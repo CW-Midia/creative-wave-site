@@ -261,7 +261,7 @@ section { padding: 90px 0; }
 .card a.card-link {
   display: inline-flex; align-items: center; gap: 8px;
   margin-top: 20px; font-size: 13px; font-weight: 600;
-  color: var(--gold); letter-spacing: 0.02em;
+  color: var(--gold-light); letter-spacing: 0.02em;
 }
 
 /* stat cards */
