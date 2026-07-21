@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `WhatsApp: ${phone}%0A%0A` +
         `${encodeURIComponent(message)}`;
 
-      const waLink = `https://wa.me/message/3SI7TIXU5ECCD1?text=${text}`;
+      const waLink = `https://wa.me/5547988211597?text=${text}`;
       showFormStatus("Abrindo o WhatsApp com sua mensagem...", false);
       window.open(waLink, "_blank");
       form.reset();
