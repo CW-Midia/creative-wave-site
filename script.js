@@ -22,17 +22,38 @@ document.addEventListener("DOMContentLoaded", () => {
   // Contact form -> WhatsApp
   const form = document.querySelector("#contact-form");
   if (form) {
+    const requiredFields = [
+      { input: form.name, errorId: "name-error", label: "nome" },
+      { input: form.phone, errorId: "phone-error", label: "WhatsApp" },
+      { input: form.message, errorId: "message-error", label: "mensagem" },
+    ];
+
     form.addEventListener("submit", (e) => {
       e.preventDefault();
+
+      let firstInvalid = null;
+      requiredFields.forEach(({ input, errorId, label }) => {
+        const errorEl = document.getElementById(errorId);
+        if (!input.value.trim()) {
+          input.setAttribute("aria-invalid", "true");
+          if (errorEl) errorEl.textContent = `Preencha o campo ${label}.`;
+          if (!firstInvalid) firstInvalid = input;
+        } else {
+          input.removeAttribute("aria-invalid");
+          if (errorEl) errorEl.textContent = "";
+        }
+      });
+
+      if (firstInvalid) {
+        firstInvalid.focus();
+        showFormStatus("Corrija os campos destacados antes de enviar.", true);
+        return;
+      }
+
       const name = form.name.value.trim();
       const phone = form.phone.value.trim();
       const service = form.service.value;
       const message = form.message.value.trim();
-
-      if (!name || !phone || !message) {
-        showFormStatus("Preencha nome, WhatsApp e mensagem antes de enviar.", true);
-        return;
-      }
 
       const text =
         `Olá! Me chamo ${name}.%0A` +
