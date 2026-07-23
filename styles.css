@@ -462,17 +462,20 @@ footer {
 .trust-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 28px;
-  margin-top: 34px;
-  padding-top: 28px;
-  border-top: 1px solid var(--gray-border);
+  gap: 12px;
+  margin: 0 0 28px;
 }
 .trust-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 13.5px;
-  color: var(--gray-text);
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gold-light);
+  background: rgba(184, 137, 74, 0.08);
+  border: 1px solid rgba(184, 137, 74, 0.3);
+  border-radius: var(--radius);
+  padding: 8px 14px;
 }
 .trust-item svg { flex-shrink: 0; color: var(--gold); }
 
