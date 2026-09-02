@@ -17,12 +17,11 @@
 <meta name="twitter:title" content="Sobre a Creative Wave — Agência de Marketing Digital em Itajaí/SC">
 <meta name="twitter:description" content="Conheça a história e os valores da Creative Wave, agência de marketing digital de Itajaí/SC.">
 <meta name="twitter:image" content="https://www.creativewaveagencia.com.br/assets/logo-transparent.png">
-<meta name="theme-color" content="#2B2A28">
+<meta name="theme-color" content="#1C1B19">
 <link rel="icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -59,139 +58,206 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
+<style>
+  :root {
+    --charcoal-deep: #1C1B19;
+    --charcoal: #2B2A28;
+    --charcoal-light: #37352F;
+    --gold: #B8894A;
+    --gold-light: #D9B475;
+    --offwhite: #F2EFE9;
+    --gray-text: #A69E8F;
+    --font-display: "Playfair Display", Georgia, serif;
+    --font-body: "Inter", -apple-system, sans-serif;
+    --glass-bg: rgba(55, 53, 47, .42);
+    --glass-border: rgba(242, 239, 233, .09);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: var(--font-body); background: var(--charcoal-deep); color: var(--offwhite); line-height: 1.6;
+    background-image:
+      linear-gradient(rgba(242,239,233,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(242,239,233,.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: var(--gold-light); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 2px; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 700; color: var(--offwhite); line-height: 1.12; margin: 0; text-shadow: 0 2px 3px rgba(10,9,8,.9), 0 6px 24px rgba(10,9,8,.7); }
+  p { color: var(--gray-text); margin: 0; }
+  strong { color: var(--offwhite); font-weight: 700; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 30px; font-size: 14px; font-weight: 600; letter-spacing: .03em; border-radius: 999px; border: 1px solid transparent; cursor: pointer; white-space: nowrap; }
+  .btn-primary { background: var(--gold); color: var(--charcoal-deep); }
+  .btn-ghost { background: var(--glass-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: var(--offwhite); border-color: var(--glass-border); }
+  .glass { background: var(--glass-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid var(--glass-border); border-radius: 20px; }
+  html { scroll-behavior: smooth; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+  @media (max-width: 900px) {
+    .grid-3 { grid-template-columns: repeat(2, 1fr) !important; }
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 0 20px; }
+    section, footer { padding: 56px 0 !important; }
+    header { padding: 90px 0 48px !important; }
+    .grid-2, .grid-3, .footer-grid { grid-template-columns: 1fr !important; }
+    .about-visual, .nav-links { display: none !important; }
+  }
+</style>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="wrap">
-    <a href="index.html" class="nav-logo">
-      <img src="assets/logo-transparent.png" alt="Creative Wave" width="57" height="34">
-      <span>Creative Wave</span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="servicos.html">Serviços</a></li>
-      <li><a href="sobre.html" class="active">Sobre</a></li>
-      <li><a href="contato.html">Contato</a></li>
-    </ul>
-    <div class="nav-cta">
-      <a href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-        <span class="btn-label">Fale no WhatsApp</span>
+<div id="top">
+
+  <div style="position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(120% 90% at 50% 0%, rgba(10,9,8,0) 0%, rgba(10,9,8,.5) 100%);"></div>
+
+  <!-- NAV -->
+  <nav style="position: sticky; top: 0; z-index: 100; background: rgba(28,27,25,.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--glass-border);">
+    <div class="wrap" style="display: flex; align-items: center; justify-content: space-between; height: 76px;">
+      <a href="index.html" style="display: flex; align-items: center; gap: 12px;">
+        <span style="font-family: var(--font-display); font-size: 1.05rem; letter-spacing: .02em; color: var(--offwhite);">Creative Wave</span>
       </a>
-      <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
+      <ul class="nav-links" style="display: flex; align-items: center; gap: 36px; list-style: none; margin: 0; padding: 0;">
+        <li><a href="index.html" style="font-size: 14px; color: var(--gray-text); font-weight: 500;">Home</a></li>
+        <li><a href="servicos.html" style="font-size: 14px; color: var(--gray-text); font-weight: 500;">Serviços</a></li>
+        <li><a href="sobre.html" style="font-size: 14px; color: var(--offwhite); font-weight: 600;">Sobre</a></li>
+        <li><a href="contato.html" style="font-size: 14px; color: var(--gray-text); font-weight: 500;">Contato</a></li>
+      </ul>
+      <a class="btn btn-primary" href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer">Falar no WhatsApp</a>
     </div>
-  </div>
-</nav>
+  </nav>
 
-<header class="page-header">
-  <div class="wrap">
-    <div class="eyebrow">Sobre a Creative Wave</div>
-    <h1>De visibilidade local a performance real</h1>
-    <hr class="divider">
-  </div>
-</header>
-
-<section style="padding-top:20px">
-  <div class="wrap">
-    <div class="grid-2" style="align-items:center">
-      <div>
-        <p class="lead">A Creative Wave nasceu como uma agência focada em posicionamento no Google Meu Negócio — ajudando pequenos negócios a aparecerem no mapa e nas buscas locais.</p>
-        <p style="margin-top:18px">Com o tempo, percebemos que “aparecer” não era mais suficiente para os negócios que queriam crescer de verdade. Visibilidade sem conversão é só ruído. Por isso, redirecionamos o foco: hoje construímos sites de alta conversão e gerimos tráfego pago, sempre orientados por dados e resultado mensurável.</p>
-        <p style="margin-top:18px">Continuamos sendo a mesma equipe, com o mesmo compromisso — só que agora falando a língua de negócios que já entendem que crescer exige investimento estratégico, não sorte. Hoje também ajudamos marcas novas e consolidadas a construir uma identidade visual que sustenta essa estratégia — porque site e tráfego rendem muito mais quando existe uma marca forte por trás.</p>
-      </div>
-      <div class="hero-graphic" style="height:320px">
-        <svg aria-hidden="true" class="growth-line" viewBox="0 0 420 380" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20 320 L100 220 L160 270 L230 150 L290 190 L380 40" />
-          <path d="M355 55 L380 40 L370 68" />
-          <circle cx="100" cy="220" r="6"/>
-          <circle cx="160" cy="270" r="6"/>
-          <circle cx="230" cy="150" r="6"/>
-          <circle cx="290" cy="190" r="6"/>
-        </svg>
-      </div>
+  <!-- HERO -->
+  <header style="padding: 110px 0 60px;">
+    <div class="wrap">
+      <div class="eyebrow" style="margin-bottom: 18px;">Sobre a Creative Wave</div>
+      <h1 style="font-size: clamp(2.1rem, 4.2vw, 3.2rem); letter-spacing: -.01em; max-width: 760px;">De visibilidade local a performance real</h1>
     </div>
-  </div>
-</section>
+  </header>
 
-<section class="section-alt">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">Nossos valores</div>
-      <h2>O que guia cada projeto que entregamos</h2>
-    </div>
-    <div class="grid-3">
-      <div class="card value-card">
-        <div class="icon">
-          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 20h18M6 20V10M12 20V4M18 20v-7"/></svg>
+  <main>
+  <!-- HISTÓRIA -->
+  <section style="padding: 20px 0 88px;">
+    <div class="wrap">
+      <div class="grid-2" style="display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center;">
+        <div style="display: flex; flex-direction: column; gap: 18px;">
+          <p style="font-size: 1.1rem; color: #C7C0B2; line-height: 1.7;">A Creative Wave nasceu como uma agência focada em posicionamento no Google Meu Negócio — ajudando pequenos negócios a aparecerem no mapa e nas buscas locais.</p>
+          <p style="font-size: .98rem;">Com o tempo, percebemos que "aparecer" não era mais suficiente para os negócios que queriam crescer de verdade. Visibilidade sem conversão é só ruído. Por isso, redirecionamos o foco: hoje construímos sites de alta conversão e gerimos tráfego pago, sempre orientados por dados e resultado mensurável.</p>
+          <p style="font-size: .98rem;">Continuamos sendo a mesma equipe, com o mesmo compromisso — só que agora falando a língua de negócios que já entendem que crescer exige investimento estratégico, não sorte. Hoje também ajudamos marcas novas e consolidadas a construir uma identidade visual que sustenta essa estratégia — porque site e tráfego rendem muito mais quando existe uma marca forte por trás.</p>
         </div>
-        <h3>Performance</h3>
-        <p>Decisões orientadas por dados, não por achismo. Cada ação é mensurada.</p>
-      </div>
-      <div class="card value-card">
-        <div class="icon">
-          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>
-        </div>
-        <h3>Sofisticação</h3>
-        <p>Comunicação visual e estratégica premium, sem clichês de agência genérica.</p>
-      </div>
-      <div class="card value-card">
-        <div class="icon">
-          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        </div>
-        <h3>Transparência</h3>
-        <p>Resultados mensuráveis e clareza total sobre onde e como o investimento está sendo aplicado.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="cta-banner">
-      <h2>Quer fazer parte dessa mudança de resultado?</h2>
-      <p>Vamos entender seu negócio e montar uma estratégia sob medida.</p>
-      <div class="hero-ctas">
-        <a href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer" class="btn btn-primary">Falar no WhatsApp <span class="btn-arrow">→</span></a>
-        <a href="contato.html" class="btn btn-ghost">Ir para contato</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <img src="assets/logo-transparent.png" alt="Creative Wave" width="50" height="30">
-        <span>Creative Wave</span>
-      </div>
-      <div class="footer-links">
-        <div class="footer-col">
-          <h4>Navegação</h4>
-          <a href="index.html">Home</a>
-          <a href="servicos.html">Serviços</a>
-          <a href="sobre.html">Sobre</a>
-          <a href="contato.html">Contato</a>
-        </div>
-        <div class="footer-col">
-          <h4>Contato</h4>
-          <a href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer">WhatsApp</a>
-          <a href="mailto:contato@creativewaveagencia.com.br">contato@creativewaveagencia.com.br</a>
-          <a href="https://instagram.com/cw.midiadigital" target="_blank" rel="noopener noreferrer">@cw.midiadigital</a>
+        <div class="about-visual glass" style="position: relative; height: 300px; padding: 24px;">
+          <svg aria-hidden="true" width="100%" height="100%" viewBox="0 0 420 380" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: .85;">
+            <path d="M20 320 L100 220 L160 270 L230 150 L290 190 L380 40" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M355 55 L380 40 L370 68" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <circle cx="100" cy="220" r="6" fill="var(--charcoal-deep)" stroke="var(--gold)" stroke-width="2"></circle>
+            <circle cx="160" cy="270" r="6" fill="var(--charcoal-deep)" stroke="var(--gold)" stroke-width="2"></circle>
+            <circle cx="230" cy="150" r="6" fill="var(--charcoal-deep)" stroke="var(--gold)" stroke-width="2"></circle>
+            <circle cx="290" cy="190" r="6" fill="var(--charcoal-deep)" stroke="var(--gold)" stroke-width="2"></circle>
+          </svg>
         </div>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span>© 2026 Creative Wave — Mídia Digital. CNPJ 58.124.061/0001-40. Todos os direitos reservados.</span>
-      <span>Sites que vendem. Tráfego que converte.</span>
-    </div>
-  </div>
-</footer>
+  </section>
 
-<a href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer" class="wa-float" aria-label="Falar no WhatsApp">
-  <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.81L2 22l5.42-1.42a9.87 9.87 0 004.62 1.18h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm0 18.02h-.01a8.1 8.1 0 01-4.14-1.13l-.3-.18-3.08.81.82-3-.2-.31a8.11 8.11 0 01-1.24-4.3c0-4.49 3.66-8.15 8.16-8.15 4.49 0 8.14 3.66 8.14 8.15 0 4.5-3.65 8.11-8.15 8.11zm4.47-6.1c-.24-.12-1.44-.71-1.67-.79-.22-.08-.38-.12-.55.12-.16.24-.63.79-.77.95-.14.16-.28.18-.52.06-.24-.12-1.01-.37-1.92-1.18-.71-.63-1.19-1.42-1.33-1.66-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.32-.75-1.81-.2-.48-.4-.41-.55-.42-.14-.01-.3-.01-.46-.01-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.15.2-.57.2-1.05.14-1.15-.06-.1-.22-.16-.46-.28z"/></svg>
-  <span>Falar no WhatsApp</span>
-</a>
+  <!-- VALORES -->
+  <section style="padding: 88px 0;">
+    <div class="wrap">
+      <div style="max-width: 640px; margin-bottom: 48px;">
+        <div class="eyebrow" style="margin-bottom: 18px;">Nossos valores</div>
+        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.6rem);">O que guia cada projeto que entregamos</h2>
+      </div>
+      <div class="grid-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+        <div class="glass" style="padding: 32px 28px;">
+          <div style="width: 44px; height: 44px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; color: var(--gold);">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 20h18M6 20V10M12 20V4M18 20v-7"/></svg>
+          </div>
+          <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Performance</h3>
+          <p style="font-size: .92rem;">Decisões orientadas por dados, não por achismo. Cada ação é mensurada.</p>
+        </div>
+        <div class="glass" style="padding: 32px 28px;">
+          <div style="width: 44px; height: 44px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; color: var(--gold);">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>
+          </div>
+          <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Sofisticação</h3>
+          <p style="font-size: .92rem;">Comunicação visual e estratégica premium, sem clichês de agência genérica.</p>
+        </div>
+        <div class="glass" style="padding: 32px 28px;">
+          <div style="width: 44px; height: 44px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; color: var(--gold);">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Transparência</h3>
+          <p style="font-size: .92rem;">Resultados mensuráveis e clareza total sobre onde e como o investimento está sendo aplicado.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="padding: 0 0 88px;">
+    <div class="wrap">
+      <div class="glass" style="padding: 56px 48px; text-align: center; border-radius: 28px;">
+        <h2 style="font-size: clamp(1.6rem, 2.8vw, 2.2rem); margin-bottom: 14px;">Quer fazer parte dessa mudança de resultado?</h2>
+        <p style="max-width: 480px; margin: 0 auto 28px;">Vamos entender seu negócio e montar uma estratégia sob medida.</p>
+        <div style="display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;">
+          <a class="btn btn-primary" href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer">Falar no WhatsApp →</a>
+          <a class="btn btn-ghost" href="contato.html">Ir para contato</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer style="padding: 0 0 32px;">
+    <div class="wrap">
+      <div class="glass" style="padding: 48px 44px; border-radius: 28px; margin-bottom: 28px;">
+        <div class="footer-grid" style="display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 40px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+              <div style="width: 34px; height: 34px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><path d="M4 19l5-6 4 3 7-9"></path></svg>
+              </div>
+              <span style="font-family: var(--font-display); font-size: 1.15rem;">Creative Wave</span>
+            </div>
+            <p style="font-size: .9rem; max-width: 26rem;">Inovação digital para marcas únicas. Sites que vendem, tráfego que converte.</p>
+          </div>
+          <div>
+            <h3 style="font-family: var(--font-body); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; font-weight: 600;">Navegação</h3>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <a href="index.html" style="font-size: 14px; color: var(--gray-text);">Home</a>
+              <a href="servicos.html" style="font-size: 14px; color: var(--gray-text);">Serviços</a>
+              <a href="sobre.html" style="font-size: 14px; color: var(--gray-text);">Sobre</a>
+              <a href="contato.html" style="font-size: 14px; color: var(--gray-text);">Contato</a>
+            </div>
+          </div>
+          <div>
+            <h3 style="font-family: var(--font-body); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; font-weight: 600;">Contato</h3>
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <a href="mailto:contato@creativewaveagencia.com.br" style="font-size: 14px; color: var(--gray-text);">contato@creativewaveagencia.com.br</a>
+              <div style="display: flex; gap: 10px;">
+                <a href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" style="width: 38px; height: 38px; border-radius: 50%; background: var(--glass-bg); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center;">
+                  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.81L2 22l5.42-1.42a9.87 9.87 0 004.62 1.18h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm0 18.02h-.01a8.1 8.1 0 01-4.14-1.13l-.3-.18-3.08.81.82-3-.2-.31a8.11 8.11 0 01-1.24-4.3c0-4.49 3.66-8.15 8.16-8.15 4.49 0 8.14 3.66 8.14 8.15 0 4.5-3.65 8.11-8.15 8.11z"></path></svg>
+                </a>
+                <a href="https://instagram.com/cw.midiadigital" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style="width: 38px; height: 38px; border-radius: 50%; background: var(--glass-bg); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center;">
+                  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="var(--gold)"></circle></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--gray-text); padding: 0 8px;">
+        <span>© 2026 Creative Wave — Mídia Digital. CNPJ 58.124.061/0001-40. Todos os direitos reservados.</span>
+        <a href="#top" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--glass-border); background: var(--glass-bg); font-size: 12.5px; color: var(--offwhite);">Voltar ao topo ↑</a>
+      </div>
+    </div>
+  </footer>
+
+</div>
 
 <script src="script.js"></script>
 </body>
