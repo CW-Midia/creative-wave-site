@@ -17,12 +17,11 @@
 <meta name="twitter:title" content="Creative Wave — Agência de Marketing Digital em Itajaí/SC">
 <meta name="twitter:description" content="Sites de alta conversão, tráfego pago e branding para negócios de Itajaí, Navegantes e Balneário Camboriú.">
 <meta name="twitter:image" content="https://www.creativewaveagencia.com.br/assets/logo-transparent.png">
-<meta name="theme-color" content="#2B2A28">
+<meta name="theme-color" content="#1C1B19">
 <link rel="icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -59,289 +58,396 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
+<style>
+  :root {
+    --charcoal-deep: #1C1B19;
+    --charcoal: #2B2A28;
+    --charcoal-light: #37352F;
+    --gold: #B8894A;
+    --gold-light: #D9B475;
+    --offwhite: #F2EFE9;
+    --gray-text: #A69E8F;
+    --font-display: "Playfair Display", Georgia, serif;
+    --font-body: "Inter", -apple-system, sans-serif;
+    --glass-bg: rgba(55, 53, 47, .42);
+    --glass-border: rgba(242, 239, 233, .09);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: var(--font-body); background: var(--charcoal-deep); color: var(--offwhite); line-height: 1.6;
+    background-image:
+      linear-gradient(rgba(242,239,233,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(242,239,233,.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: var(--gold-light); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 2px; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 700; color: var(--offwhite); line-height: 1.12; margin: 0; text-shadow: 0 2px 3px rgba(10,9,8,.9), 0 6px 24px rgba(10,9,8,.7); }
+  p { color: var(--gray-text); margin: 0; }
+  strong { color: var(--offwhite); font-weight: 700; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 30px; font-size: 14px; font-weight: 600; letter-spacing: .03em; border-radius: 999px; border: 1px solid transparent; cursor: pointer; white-space: nowrap; }
+  .btn-primary { background: var(--gold); color: var(--charcoal-deep); }
+  .btn-ghost { background: var(--glass-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: var(--offwhite); border-color: var(--glass-border); }
+  .glass { background: var(--glass-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid var(--glass-border); border-radius: 20px; }
+  .micro-proof { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13px; color: var(--gray-text); }
+  .micro-proof b { color: var(--gold); font-weight: 700; }
+  .micro-proof .dot { color: var(--charcoal-light); }
+  html { scroll-behavior: smooth; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+  @media (max-width: 900px) {
+    .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 0 20px; }
+    section, footer { padding: 56px 0 !important; }
+    header { padding: 100px 0 56px !important; }
+    .hero-grid, .grid-2, .grid-3, .grid-4, .footer-grid { grid-template-columns: 1fr !important; }
+    .hero-visual, .nav-links { display: none !important; }
+  }
+</style>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="wrap">
-    <a href="index.html" class="nav-logo">
-      <img src="assets/logo-transparent.png" alt="Creative Wave" width="57" height="34">
-      <span>Creative Wave</span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="index.html" class="active">Home</a></li>
-      <li><a href="servicos.html">Serviços</a></li>
-      <li><a href="sobre.html">Sobre</a></li>
-      <li><a href="contato.html">Contato</a></li>
-    </ul>
-    <div class="nav-cta">
-      <a href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-        <span class="btn-label">Fale no WhatsApp</span>
+<div id="top">
+
+  <div style="position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(120% 90% at 50% 0%, rgba(10,9,8,0) 0%, rgba(10,9,8,.5) 100%);"></div>
+
+  <!-- NAV -->
+  <nav style="position: sticky; top: 0; z-index: 100; background: rgba(28,27,25,.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--glass-border);">
+    <div class="wrap" style="display: flex; align-items: center; justify-content: space-between; height: 76px;">
+      <a href="#top" style="display: flex; align-items: center; gap: 12px;">
+        <span style="font-family: var(--font-display); font-size: 1.05rem; letter-spacing: .02em; color: var(--offwhite);">Creative Wave</span>
       </a>
-      <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
+      <ul class="nav-links" style="display: flex; align-items: center; gap: 36px; list-style: none; margin: 0; padding: 0;">
+        <li><a href="#servicos" style="font-size: 14px; color: var(--gray-text); font-weight: 500;">Serviços</a></li>
+        <li><a href="#processo" style="font-size: 14px; color: var(--gray-text); font-weight: 500;">Processo</a></li>
+        <li><a href="sobre.html" style="font-size: 14px; color: var(--gray-text); font-weight: 500;">Sobre</a></li>
+        <li><a href="#contato" style="font-size: 14px; color: var(--gray-text); font-weight: 500;">Contato</a></li>
+      </ul>
+      <a class="btn btn-primary" href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer">Falar no WhatsApp</a>
     </div>
-  </div>
-</nav>
+  </nav>
 
-<header class="hero">
-  <div class="wrap">
-    <div>
-      <div class="eyebrow">Marketing de Performance</div>
-      <h1>Sites que vendem.<br>Tráfego que <span class="gold">converte</span>.</h1>
-      <p class="lead">Criamos sites de alta conversão e gerimos tráfego pago com decisões orientadas por dados — para negócios que já entendem que crescer exige investimento, não sorte.</p>
-      <div class="trust-bar">
-        <div class="trust-item">
-          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          Orçamento sem compromisso
+  <!-- HERO -->
+  <header style="padding: 130px 0 110px; position: relative; overflow: hidden;">
+    <div class="wrap hero-grid" style="display: grid; grid-template-columns: 1.05fr .95fr; gap: 40px; align-items: center; position: relative; z-index: 1;">
+      <div>
+        <div class="eyebrow" style="margin-bottom: 18px;">Marketing de Performance</div>
+        <h1 style="font-size: clamp(2.4rem, 5vw, 4.2rem); letter-spacing: -.01em; margin-bottom: 22px;">Sites que vendem.<br>Tráfego que <span style="color: var(--gold);">converte</span>.</h1>
+        <p style="font-size: 1.15rem; color: #C7C0B2; line-height: 1.7; max-width: 480px; margin-bottom: 30px;">Criamos <strong>sites de alta conversão</strong> e gerimos <strong>tráfego pago</strong> com decisões orientadas por dados — para negócios que já entendem que crescer exige investimento, não sorte.</p>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 18px;">
+          <a class="btn btn-primary" href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer">Falar no WhatsApp →</a>
+          <a class="btn btn-ghost" href="#servicos">Ver serviços</a>
         </div>
-        <div class="trust-item">
-          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-          Resposta em até 24h
-        </div>
-        <div class="trust-item">
-          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l3 6.5 7 1-5 5 1.5 7-6.5-3.5L5 21.5 6.5 14.5l-5-5 7-1z"/></svg>
-          Sem fidelidade contratual
+        <div class="micro-proof">
+          <b>✓</b> Orçamento sem compromisso <span class="dot">·</span>
+          <b>✓</b> Resposta em até 24h <span class="dot">·</span>
+          <b>✓</b> Sem fidelidade contratual
         </div>
       </div>
-      <div class="hero-ctas">
-        <a href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer" class="btn btn-primary">Falar no WhatsApp <span class="btn-arrow">→</span></a>
-        <a href="servicos.html" class="btn btn-ghost">Ver serviços</a>
+
+      <div class="hero-visual" style="position: relative; height: 420px;">
+        <svg aria-hidden="true" width="100%" height="100%" viewBox="0 0 420 380" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; inset: 0; opacity: .8;">
+          <path d="M20 320 L100 220 L160 270 L230 150 L290 190 L380 40" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M355 55 L380 40 L370 68" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <circle cx="100" cy="220" r="6" fill="var(--charcoal-deep)" stroke="var(--gold)" stroke-width="2"></circle>
+          <circle cx="160" cy="270" r="6" fill="var(--charcoal-deep)" stroke="var(--gold)" stroke-width="2"></circle>
+          <circle cx="230" cy="150" r="6" fill="var(--charcoal-deep)" stroke="var(--gold)" stroke-width="2"></circle>
+          <circle cx="290" cy="190" r="6" fill="var(--charcoal-deep)" stroke="var(--gold)" stroke-width="2"></circle>
+        </svg>
+
+        <div class="glass" style="position: absolute; top: 24px; right: 10px; width: 220px; padding: 18px 20px; transform: rotate(-4deg); box-shadow: 0 20px 44px rgba(0,0,0,.35);">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><path d="M17 7l3-2"></path></svg>
+            <span style="font-size: 13px; font-weight: 600;">Tráfego pago</span>
+          </div>
+          <p style="font-size: 12.5px; line-height: 1.5;">Campanhas construídas pra captar quem ainda não te conhece.</p>
+        </div>
+
+        <div class="glass" style="position: absolute; bottom: 34px; left: 0; width: 232px; padding: 18px 20px; transform: rotate(3deg); box-shadow: 0 20px 44px rgba(0,0,0,.35);">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="1"></rect><path d="M3 8h18"></path></svg>
+            <span style="font-size: 13px; font-weight: 600;">Sites que vendem</span>
+          </div>
+          <p style="font-size: 12.5px; line-height: 1.5;">Desenhados com um único objetivo: converter visita em cliente.</p>
+        </div>
       </div>
     </div>
-    <div class="hero-graphic">
-      <svg aria-hidden="true" class="growth-line" viewBox="0 0 420 380" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20 320 L100 220 L160 270 L230 150 L290 190 L380 40" />
-        <path d="M355 55 L380 40 L370 68" />
-        <circle cx="100" cy="220" r="6"/>
-        <circle cx="160" cy="270" r="6"/>
-        <circle cx="230" cy="150" r="6"/>
-        <circle cx="290" cy="190" r="6"/>
-      </svg>
-    </div>
-  </div>
-</header>
+  </header>
 
-<div class="wave-divider" aria-hidden="true">
-  <svg aria-hidden="true" viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0,30 C150,60 350,0 600,30 C850,60 1050,0 1200,30" /></svg>
+  <div style="line-height: 0; margin-top: -1px;"><svg aria-hidden="true" viewBox="0 0 1200 60" preserveAspectRatio="none" style="width: 100%; height: 32px; display: block;"><path d="M0,30 C150,60 350,0 600,30 C850,60 1050,0 1200,30" fill="none" stroke="var(--gold)" stroke-width="1.5" opacity=".45"></path></svg></div>
+
+  <main>
+  <!-- DIFERENCIAIS (grid) -->
+  <section style="padding: 88px 0;">
+    <div class="wrap">
+      <div style="max-width: 640px; margin-bottom: 52px;">
+        <div class="eyebrow" style="margin-bottom: 18px;">Por que a Creative Wave</div>
+        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.6rem);">Seis motivos pra não contratar mais uma agência genérica</h2>
+      </div>
+      <div class="grid-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+        <div class="glass" style="padding: 28px 26px;">
+          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" style="margin-bottom: 16px;"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1" fill="var(--gold)"></circle></svg>
+          <h3 style="font-size: 1.05rem; margin-bottom: 8px;">Estratégia sob medida</h3>
+          <p style="font-size: .9rem;">Nada de pacote genérico. Cada projeto parte de um diagnóstico real do seu negócio.</p>
+        </div>
+        <div class="glass" style="padding: 28px 26px;">
+          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" style="margin-bottom: 16px;"><path d="M4 19V9M12 19V4M20 19v-6"></path></svg>
+          <h3 style="font-size: 1.05rem; margin-bottom: 8px;">Orientado a dados</h3>
+          <p style="font-size: .9rem;">Cada decisão de design e de campanha é validada por métricas reais, não por achismo.</p>
+        </div>
+        <div class="glass" style="padding: 28px 26px;">
+          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" style="margin-bottom: 16px;"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>
+          <h3 style="font-size: 1.05rem; margin-bottom: 8px;">Frentes integradas</h3>
+          <p style="font-size: .9rem;">Marca, site e tráfego trabalhando juntos — nunca isolados um do outro.</p>
+        </div>
+        <div class="glass" style="padding: 28px 26px;">
+          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" style="margin-bottom: 16px;"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+          <h3 style="font-size: 1.05rem; margin-bottom: 8px;">Resposta em até 24h</h3>
+          <p style="font-size: .9rem;">Contato rápido pelo WhatsApp, sem enrolação nem departamento de espera.</p>
+        </div>
+        <div class="glass" style="padding: 28px 26px;">
+          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" style="margin-bottom: 16px;"><path d="M12 2l3 6.5 7 1-5 5 1.5 7-6.5-3.5L5 21.5 6.5 14.5l-5-5 7-1z"></path></svg>
+          <h3 style="font-size: 1.05rem; margin-bottom: 8px;">Sem fidelidade contratual</h3>
+          <p style="font-size: .9rem;">Você fica pelo resultado entregue, não por obrigação de contrato.</p>
+        </div>
+        <div class="glass" style="padding: 28px 26px;">
+          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" style="margin-bottom: 16px;"><rect x="3" y="4" width="18" height="16" rx="1"></rect><path d="M3 9h18"></path></svg>
+          <h3 style="font-size: 1.05rem; margin-bottom: 8px;">Domínio no seu nome</h3>
+          <p style="font-size: .9rem;">Site e hospedagem registrados em seu nome — controle total do seu ativo digital.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEMA -->
+  <section style="padding: 88px 0;">
+    <div class="wrap">
+      <div style="max-width: 640px; margin-bottom: 52px;">
+        <div class="eyebrow" style="margin-bottom: 18px;">O custo do invisível</div>
+        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.6rem);">Cada busca sem resposta é um cliente que escolheu outro</h2>
+      </div>
+      <div class="grid-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+        <div class="glass" style="padding: 36px 32px;">
+          <h3 style="font-size: 1.3rem; margin-bottom: 20px;">Sem presença digital</h3>
+          <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px;">
+            <li style="display: flex; gap: 10px; font-size: .95rem; color: var(--gray-text);"><span style="color: var(--gray-text); font-weight: 700;">✕</span>Buscas no Google retornam só concorrentes</li>
+            <li style="display: flex; gap: 10px; font-size: .95rem; color: var(--gray-text);"><span style="color: var(--gray-text); font-weight: 700;">✕</span>Sem canal direto, oportunidades se perdem</li>
+            <li style="display: flex; gap: 10px; font-size: .95rem; color: var(--gray-text);"><span style="color: var(--gray-text); font-weight: 700;">✕</span>Você existe — mas a internet não sabe disso</li>
+            <li style="display: flex; gap: 10px; font-size: .95rem; color: var(--gray-text);"><span style="color: var(--gray-text); font-weight: 700;">✕</span>Depende só do algoritmo do Instagram pra ser visto</li>
+          </ul>
+        </div>
+        <div class="glass" style="padding: 36px 32px;">
+          <h3 style="font-size: 1.3rem; margin-bottom: 20px;">Com Creative Wave</h3>
+          <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px;">
+            <li style="display: flex; gap: 10px; font-size: .95rem; color: var(--offwhite);"><span style="color: var(--gold); font-weight: 700;">✓</span>Site profissional gera confiança em segundos</li>
+            <li style="display: flex; gap: 10px; font-size: .95rem; color: var(--offwhite);"><span style="color: var(--gold); font-weight: 700;">✓</span>Botão de WhatsApp direto, sem atrito</li>
+            <li style="display: flex; gap: 10px; font-size: .95rem; color: var(--offwhite);"><span style="color: var(--gold); font-weight: 700;">✓</span>Google trabalhando 24h por você</li>
+            <li style="display: flex; gap: 10px; font-size: .95rem; color: var(--offwhite);"><span style="color: var(--gold); font-weight: 700;">✓</span>Presença própria, independente de algoritmo</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVIÇOS -->
+  <section id="servicos" style="padding: 88px 0;">
+    <div class="wrap">
+      <div style="max-width: 640px; margin-bottom: 52px;">
+        <div class="eyebrow" style="margin-bottom: 18px;">O que fazemos</div>
+        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.6rem);">Três frentes, um só objetivo: crescimento</h2>
+      </div>
+      <div class="grid-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+        <div class="glass" style="padding: 36px 32px;">
+          <div style="width: 48px; height: 48px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 22px; color: var(--gold);">
+            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="1"></rect><path d="M3 8h18"></path></svg>
+          </div>
+          <h3 style="margin-bottom: 12px;">Criação de Sites</h3>
+          <p style="font-size: .95rem;">Todo dia sem um site profissional é um cliente que foi pro concorrente. Construímos o seu pra vender — rápido, responsivo, sem modelo genérico.</p>
+        </div>
+        <div class="glass" style="padding: 36px 32px;">
+          <div style="width: 48px; height: 48px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 22px; color: var(--gold);">
+            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><path d="M17 7l3-2"></path></svg>
+          </div>
+          <h3 style="margin-bottom: 12px;">Gestão de Tráfego Pago</h3>
+          <p style="font-size: .95rem;">Esperar o cliente aparecer sozinho não é estratégia, é sorte. Campanhas pagas construídas pra captar e converter quem ainda não te conhece.</p>
+        </div>
+        <div class="glass" style="padding: 36px 32px;">
+          <div style="width: 48px; height: 48px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 22px; color: var(--gold);">
+            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"></circle><path d="M12 3a6 9 0 000 18 6 9 0 000-18z"></path><path d="M3 12h18"></path></svg>
+          </div>
+          <h3 style="margin-bottom: 12px;">Branding e Identidade Visual</h3>
+          <p style="font-size: .95rem;">Marca sem identidade clara perde venda antes da primeira conversa. Construímos do zero ou reposicionamos o que já existe — logo, paleta, tipografia, guia de uso.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESSO (grid) -->
+  <section id="processo" style="padding: 88px 0;">
+    <div class="wrap">
+      <div style="max-width: 640px; margin-bottom: 52px;">
+        <div class="eyebrow" style="margin-bottom: 18px;">Como trabalhamos</div>
+        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.6rem);">Um processo claro, do diagnóstico ao resultado</h2>
+      </div>
+      <div class="grid-4" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+        <div class="glass" style="padding: 24px 22px;">
+          <div style="font-family: var(--font-display); font-size: 2rem; color: var(--gold); margin-bottom: 14px;">01</div>
+          <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Diagnóstico</h3>
+          <p style="font-size: .9rem;">Entendemos seu negócio, público e objetivos antes de propor qualquer solução.</p>
+        </div>
+        <div class="glass" style="padding: 24px 22px;">
+          <div style="font-family: var(--font-display); font-size: 2rem; color: var(--gold); margin-bottom: 14px;">02</div>
+          <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Estratégia</h3>
+          <p style="font-size: .9rem;">Definimos o plano de site e/ou tráfego com metas e métricas claras de sucesso.</p>
+        </div>
+        <div class="glass" style="padding: 24px 22px;">
+          <div style="font-family: var(--font-display); font-size: 2rem; color: var(--gold); margin-bottom: 14px;">03</div>
+          <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Execução</h3>
+          <p style="font-size: .9rem;">Construímos o site e/ou lançamos as campanhas com acompanhamento próximo.</p>
+        </div>
+        <div class="glass" style="padding: 24px 22px;">
+          <div style="font-family: var(--font-display); font-size: 2rem; color: var(--gold); margin-bottom: 14px;">04</div>
+          <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Otimização</h3>
+          <p style="font-size: .9rem;">Analisamos os dados e ajustamos continuamente para melhorar o resultado.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ÁREAS DE ATUAÇÃO (grid) -->
+  <section style="padding: 88px 0;">
+    <div class="wrap">
+      <div style="max-width: 640px; margin-bottom: 48px;">
+        <div class="eyebrow" style="margin-bottom: 18px;">Pra quem é</div>
+        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.6rem);">Ideal pra negócios como o seu</h2>
+      </div>
+      <div class="grid-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+        <div class="glass" style="padding: 20px; text-align: center; font-size: .95rem; font-weight: 500; border-radius: 999px;">Comércio local</div>
+        <div class="glass" style="padding: 20px; text-align: center; font-size: .95rem; font-weight: 500; border-radius: 999px;">Serviços profissionais</div>
+        <div class="glass" style="padding: 20px; text-align: center; font-size: .95rem; font-weight: 500; border-radius: 999px;">Saúde e bem-estar</div>
+        <div class="glass" style="padding: 20px; text-align: center; font-size: .95rem; font-weight: 500; border-radius: 999px;">Alimentação</div>
+        <div class="glass" style="padding: 20px; text-align: center; font-size: .95rem; font-weight: 500; border-radius: 999px;">Moda e beleza</div>
+        <div class="glass" style="padding: 20px; text-align: center; font-size: .95rem; font-weight: 500; border-radius: 999px;">Imobiliário</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ (grid) -->
+  <section style="padding: 88px 0;">
+    <div class="wrap">
+      <div style="max-width: 640px; margin-bottom: 48px;">
+        <div class="eyebrow" style="margin-bottom: 18px;">Perguntas frequentes</div>
+        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.6rem);">Antes de falar com a gente, tire suas dúvidas</h2>
+      </div>
+      <div class="grid-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <details class="glass" style="padding: 18px 22px;" open>
+          <summary style="cursor: pointer; font-weight: 600; font-size: 1rem; color: var(--offwhite);">Quanto custa um site ou uma campanha de tráfego?</summary>
+          <p style="font-size: .9rem; margin-top: 10px;">Cada projeto é orçado sob medida, depois de entendermos seu negócio e objetivo. Fale com a gente pelo WhatsApp e receba uma proposta sem compromisso.</p>
+        </details>
+        <details class="glass" style="padding: 18px 22px;">
+          <summary style="cursor: pointer; font-weight: 600; font-size: 1rem; color: var(--offwhite);">Quanto tempo leva para o site ficar pronto?</summary>
+          <p style="font-size: .9rem; margin-top: 10px;">Em média, entre 3 e 7 dias úteis, dependendo da complexidade do projeto e da rapidez no envio de conteúdos e aprovações.</p>
+        </details>
+        <details class="glass" style="padding: 18px 22px;">
+          <summary style="cursor: pointer; font-weight: 600; font-size: 1rem; color: var(--offwhite);">Preciso assinar contrato de fidelidade longo?</summary>
+          <p style="font-size: .9rem; margin-top: 10px;">Não. Não trabalhamos com fidelidade forçada — você permanece com a gente pelo resultado entregue, não por obrigação contratual.</p>
+        </details>
+        <details class="glass" style="padding: 18px 22px;">
+          <summary style="cursor: pointer; font-weight: 600; font-size: 1rem; color: var(--offwhite);">O site fica registrado no meu nome?</summary>
+          <p style="font-size: .9rem; margin-top: 10px;">Sim. Domínio e hospedagem ficam em seu nome, garantindo que você tenha controle total sobre o seu ativo digital.</p>
+        </details>
+        <details class="glass" style="padding: 18px 22px;">
+          <summary style="cursor: pointer; font-weight: 600; font-size: 1rem; color: var(--offwhite);">Vocês fazem branding para marcas que já existem?</summary>
+          <p style="font-size: .9rem; margin-top: 10px;">Sim. Trabalhamos tanto com marcas novas quanto com reposicionamento de marcas já consolidadas que precisam de uma nova identidade visual.</p>
+        </details>
+        <details class="glass" style="padding: 18px 22px;">
+          <summary style="cursor: pointer; font-weight: 600; font-size: 1rem; color: var(--offwhite);">Como funciona a gestão de tráfego pago?</summary>
+          <p style="font-size: .9rem; margin-top: 10px;">Cuidamos de toda a criação das campanhas, criativos e otimização contínua, com relatórios claros sobre onde o investimento está sendo aplicado.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section id="contato" style="padding: 88px 0;">
+    <div class="wrap">
+      <div class="glass" style="padding: 64px 48px; text-align: center; border-radius: 28px;">
+        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.6rem); margin-bottom: 16px;">Chega de esperar o cliente te achar por acaso.</h2>
+        <p style="max-width: 480px; margin: 0 auto 32px;">Conte um pouco sobre o seu negócio e vamos montar uma estratégia sob medida.</p>
+        <a class="btn btn-primary" href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer">Falar no WhatsApp →</a>
+        <div style="display: flex; align-items: center; gap: 12px; background: rgba(184,137,74,.1); border: 1px solid rgba(184,137,74,.3); padding: 16px 22px; border-radius: 999px; font-size: 13.5px; color: var(--gold-light); margin: 28px auto 0; max-width: 460px; justify-content: center;">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="flex-shrink: 0; color: var(--gold);"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4l3 3"></path></svg>
+          Atendemos um número limitado de clientes por mês para garantir dedicação total a cada projeto.
+        </div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer style="padding: 90px 0 32px;">
+    <div class="wrap">
+      <div class="glass" style="padding: 48px 44px; border-radius: 28px; margin-bottom: 28px;">
+        <div class="footer-grid" style="display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 40px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+              <div style="width: 34px; height: 34px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><path d="M4 19l5-6 4 3 7-9"></path></svg>
+              </div>
+              <span style="font-family: var(--font-display); font-size: 1.15rem;">Creative Wave</span>
+            </div>
+            <p style="font-size: .9rem; max-width: 26rem;">Inovação digital para marcas únicas. Sites que vendem, tráfego que converte.</p>
+          </div>
+          <div>
+            <h3 style="font-family: var(--font-body); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; font-weight: 600;">Navegação</h3>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <a href="#servicos" style="font-size: 14px; color: var(--gray-text);">Serviços</a>
+              <a href="#processo" style="font-size: 14px; color: var(--gray-text);">Processo</a>
+              <a href="sobre.html" style="font-size: 14px; color: var(--gray-text);">Sobre</a>
+              <a href="contato.html" style="font-size: 14px; color: var(--gray-text);">Contato</a>
+            </div>
+          </div>
+          <div>
+            <h3 style="font-family: var(--font-body); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; font-weight: 600;">Contato</h3>
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <a href="mailto:contato@creativewaveagencia.com.br" style="font-size: 14px; color: var(--gray-text);">contato@creativewaveagencia.com.br</a>
+              <div style="display: flex; gap: 10px;">
+                <a href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" style="width: 38px; height: 38px; border-radius: 50%; background: var(--glass-bg); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center;">
+                  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.81L2 22l5.42-1.42a9.87 9.87 0 004.62 1.18h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm0 18.02h-.01a8.1 8.1 0 01-4.14-1.13l-.3-.18-3.08.81.82-3-.2-.31a8.11 8.11 0 01-1.24-4.3c0-4.49 3.66-8.15 8.16-8.15 4.49 0 8.14 3.66 8.14 8.15 0 4.5-3.65 8.11-8.15 8.11z"></path></svg>
+                </a>
+                <a href="https://instagram.com/cw.midiadigital" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style="width: 38px; height: 38px; border-radius: 50%; background: var(--glass-bg); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center;">
+                  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="var(--gold)"></circle></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--gray-text); padding: 0 8px;">
+        <span>© 2026 Creative Wave — Mídia Digital. CNPJ 58.124.061/0001-40. Todos os direitos reservados.</span>
+        <a href="#top" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--glass-border); background: var(--glass-bg); font-size: 12.5px; color: var(--offwhite);">Voltar ao topo ↑</a>
+      </div>
+    </div>
+  </footer>
+
 </div>
-
-<main>
-
-<section class="section-alt">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">O problema</div>
-      <h2>Aparecer no Google não é mais suficiente</h2>
-      <p class="lead">A maioria das agências ainda vende “visibilidade”. Nós vendemos resultado: sites que convertem visita em cliente, e campanhas de tráfego construídas para gerar retorno mensurável.</p>
-    </div>
-    <div class="grid-3">
-      <div class="card stat-card">
-        <div class="stat-number">100%</div>
-        <h3>Orientado a dados</h3>
-        <p>Cada decisão de design e de campanha é validada por métricas reais, não por achismo.</p>
-      </div>
-      <div class="card stat-card">
-        <div class="stat-number">3</div>
-        <h3>Frentes integradas</h3>
-        <p>Marca, site e tráfego trabalhando juntos — de nada adianta atrair visita para uma marca sem identidade ou uma página que não converte.</p>
-      </div>
-      <div class="card stat-card">
-        <div class="stat-number">1:1</div>
-        <h3>Estratégia sob medida</h3>
-        <p>Nada de pacote genérico. Cada projeto parte de um diagnóstico real do seu negócio.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">O custo do invisível</div>
-      <h2>Cada busca sem resposta é um cliente que escolheu outro</h2>
-    </div>
-    <div class="grid-2">
-      <div class="card">
-        <h3>Sem presença digital</h3>
-        <ul class="compare-list compare-list-neg">
-          <li>Buscas no Google retornam só concorrentes</li>
-          <li>Sem canal direto, oportunidades se perdem</li>
-          <li>Você existe — mas a internet não sabe disso</li>
-          <li>Depende só do algoritmo do Instagram pra ser visto</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Com Creative Wave</h3>
-        <ul class="compare-list compare-list-pos">
-          <li>Site profissional gera confiança em segundos</li>
-          <li>Botão de WhatsApp direto, sem atrito</li>
-          <li>Google trabalhando 24h por você</li>
-          <li>Presença própria, independente de algoritmo</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section-alt">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">O que fazemos</div>
-      <h2>Três frentes, um só objetivo: crescimento</h2>
-    </div>
-    <div class="grid-3">
-      <div class="card">
-        <div class="icon">
-          <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 8h18"/><circle cx="6" cy="6" r="0.6" fill="currentColor"/><circle cx="8.5" cy="6" r="0.6" fill="currentColor"/></svg>
-        </div>
-        <h3>Criação de Sites</h3>
-        <p>Sites rápidos, responsivos e desenhados com um único objetivo: transformar visitante em cliente. Sem templates genéricos.</p>
-        <a href="servicos.html#sites" class="card-link" aria-label="Saiba mais sobre Criação de Sites">Saiba mais →</a>
-      </div>
-      <div class="card">
-        <div class="icon">
-          <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor"/><path d="M17 7l3-2"/></svg>
-        </div>
-        <h3>Gestão de Tráfego Pago</h3>
-        <p>Prospecção paga para quem ainda não conhece sua marca — campanhas construídas para captar e converter novos públicos.</p>
-        <a href="servicos.html#trafego" class="card-link" aria-label="Saiba mais sobre Gestão de Tráfego Pago">Saiba mais →</a>
-      </div>
-      <div class="card">
-        <div class="icon">
-          <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3a6 9 0 000 18 6 9 0 000-18z"/><path d="M3 12h18"/></svg>
-        </div>
-        <h3>Branding e Identidade Visual</h3>
-        <p>Construção de marca do zero ou reposicionamento de marcas já consolidadas — logo, paleta, tipografia e guia de uso.</p>
-        <a href="servicos.html#branding" class="card-link" aria-label="Saiba mais sobre Branding e Identidade Visual">Saiba mais →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">Como trabalhamos</div>
-      <h2>Um processo claro, do diagnóstico ao resultado</h2>
-    </div>
-    <div>
-      <div class="step">
-        <div class="step-num">01</div>
-        <div><h3>Diagnóstico</h3><p>Entendemos seu negócio, público e objetivos antes de propor qualquer solução.</p></div>
-      </div>
-      <div class="step">
-        <div class="step-num">02</div>
-        <div><h3>Estratégia</h3><p>Definimos o plano de site e/ou tráfego com metas e métricas claras de sucesso.</p></div>
-      </div>
-      <div class="step">
-        <div class="step-num">03</div>
-        <div><h3>Execução</h3><p>Construímos o site e/ou lançamos as campanhas com acompanhamento próximo.</p></div>
-      </div>
-      <div class="step">
-        <div class="step-num">04</div>
-        <div><h3>Otimização</h3><p>Analisamos os dados e ajustamos continuamente para melhorar o resultado.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section-alt">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">Perguntas frequentes</div>
-      <h2>Antes de falar com a gente, tire suas dúvidas</h2>
-    </div>
-    <div>
-      <details class="faq-item" open>
-        <summary>Quanto custa um site ou uma campanha de tráfego?</summary>
-        <p>Cada projeto é orçado sob medida, depois de entendermos seu negócio e objetivo. Fale com a gente pelo WhatsApp e receba uma proposta sem compromisso.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Quanto tempo leva para o site ficar pronto?</summary>
-        <p>Em média, entre 3 e 7 dias úteis, dependendo da complexidade do projeto e da rapidez no envio de conteúdos e aprovações.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Preciso assinar contrato de fidelidade longo?</summary>
-        <p>Não. Não trabalhamos com fidelidade forçada — você permanece com a gente pelo resultado entregue, não por obrigação contratual.</p>
-      </details>
-      <details class="faq-item">
-        <summary>O site fica registrado no meu nome?</summary>
-        <p>Sim. Domínio e hospedagem ficam em seu nome, garantindo que você tenha controle total sobre o seu ativo digital.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Vocês fazem branding para marcas que já existem?</summary>
-        <p>Sim. Trabalhamos tanto com marcas novas, criadas do zero, quanto com reposicionamento de marcas já consolidadas que precisam de uma nova identidade visual.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Como funciona a gestão de tráfego pago?</summary>
-        <p>Cuidamos de toda a criação das campanhas, criativos e otimização contínua, com relatórios claros sobre onde o investimento está sendo aplicado e o retorno gerado.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Posso alterar o site depois de pronto?</summary>
-        <p>Sim. Pequenos ajustes de texto e imagem entram no pós-entrega sem custo. Mudanças estruturais maiores (novas páginas, funcionalidades) são orçadas à parte.</p>
-      </details>
-    </div>
-  </div>
-</section>
-
-<div class="wave-divider wave-divider-flip" aria-hidden="true">
-  <svg aria-hidden="true" viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0,30 C150,60 350,0 600,30 C850,60 1050,0 1200,30" /></svg>
-</div>
-
-<section>
-  <div class="wrap">
-    <div class="cta-banner">
-      <h2>Chega de esperar o cliente te achar por acaso</h2>
-      <p>Conte um pouco sobre o seu negócio e vamos montar uma estratégia sob medida.</p>
-      <div class="hero-ctas">
-        <a href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer" class="btn btn-primary">Falar no WhatsApp <span class="btn-arrow">→</span></a>
-        <a href="contato.html" class="btn btn-ghost">Ir para contato</a>
-      </div>
-      <div class="scarcity-strip" style="margin:28px auto 0; max-width:460px; justify-content:center;">
-        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>
-        Atendemos um número limitado de clientes por mês para garantir dedicação total a cada projeto.
-      </div>
-    </div>
-  </div>
-</section>
-
-</main>
-
-<footer>
-  <div class="wrap">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <img src="assets/logo-transparent.png" alt="Creative Wave" width="50" height="30">
-        <span>Creative Wave</span>
-      </div>
-      <div class="footer-links">
-        <div class="footer-col">
-          <h3>Navegação</h3>
-          <a href="index.html">Home</a>
-          <a href="servicos.html">Serviços</a>
-          <a href="sobre.html">Sobre</a>
-          <a href="contato.html">Contato</a>
-        </div>
-        <div class="footer-col">
-          <h3>Contato</h3>
-          <a href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer">WhatsApp</a>
-          <a href="mailto:contato@creativewaveagencia.com.br">contato@creativewaveagencia.com.br</a>
-          <a href="https://instagram.com/cw.midiadigital" target="_blank" rel="noopener noreferrer">@cw.midiadigital</a>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2026 Creative Wave — Mídia Digital. CNPJ 58.124.061/0001-40. Todos os direitos reservados.</span>
-      <span>Sites que vendem. Tráfego que converte.</span>
-    </div>
-  </div>
-</footer>
-
-<a href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer" class="wa-float" aria-label="Falar no WhatsApp">
-  <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.81L2 22l5.42-1.42a9.87 9.87 0 004.62 1.18h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm0 18.02h-.01a8.1 8.1 0 01-4.14-1.13l-.3-.18-3.08.81.82-3-.2-.31a8.11 8.11 0 01-1.24-4.3c0-4.49 3.66-8.15 8.16-8.15 4.49 0 8.14 3.66 8.14 8.15 0 4.5-3.65 8.11-8.15 8.11zm4.47-6.1c-.24-.12-1.44-.71-1.67-.79-.22-.08-.38-.12-.55.12-.16.24-.63.79-.77.95-.14.16-.28.18-.52.06-.24-.12-1.01-.37-1.92-1.18-.71-.63-1.19-1.42-1.33-1.66-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.32-.75-1.81-.2-.48-.4-.41-.55-.42-.14-.01-.3-.01-.46-.01-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.15.2-.57.2-1.05.14-1.15-.06-.1-.22-.16-.46-.28z"/></svg>
-  <span>Falar no WhatsApp</span>
-</a>
-
-<script src="script.js"></script>
+<script>
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var id = link.getAttribute('href').slice(1);
+      var target = id ? document.getElementById(id) : document.body;
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
 </body>
 </html>
