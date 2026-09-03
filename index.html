@@ -772,6 +772,25 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
     (() => {
       "use strict";
 
+      function showDebugBanner(msg) {
+        let el = document.getElementById("debug-banner");
+        if (!el) {
+          el = document.createElement("div");
+          el.id = "debug-banner";
+          el.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:99999;background:#b0392b;color:#fff;padding:10px 14px;font:12px/1.4 monospace;white-space:pre-wrap;word-break:break-word;max-height:60vh;overflow:auto;";
+          (document.body || document.documentElement).appendChild(el);
+        }
+        el.textContent += msg + "\n\n";
+      }
+
+      window.addEventListener("error", (e) => {
+        showDebugBanner("ERRO: " + e.message + " @ " + (e.filename || "?") + ":" + e.lineno + ":" + e.colno);
+      });
+      window.addEventListener("unhandledrejection", (e) => {
+        const reason = e.reason && e.reason.stack ? e.reason.stack : String(e.reason);
+        showDebugBanner("PROMISE REJEITADA: " + reason);
+      });
+
       const FRAME_COUNT = 110;
       const FRAME_PAD = 4;
       const LERP_FACTOR = 0.115;
