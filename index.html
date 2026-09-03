@@ -17,7 +17,7 @@
 <meta name="twitter:title" content="Creative Wave — Agência de Marketing Digital em Itajaí/SC">
 <meta name="twitter:description" content="Sites de alta conversão, tráfego pago e branding para negócios de Itajaí, Navegantes e Balneário Camboriú.">
 <meta name="twitter:image" content="https://www.creativewaveagencia.com.br/assets/logo-transparent.png">
-<meta name="theme-color" content="#1C1B19">
+<meta name="theme-color" content="#0A0A0A">
 <link rel="icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -60,7 +60,7 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
 <!-- End Meta Pixel Code -->
 <style>
   :root {
-    --charcoal-deep: #1C1B19;
+    --charcoal-deep: #0A0A0A;
     --charcoal: #2B2A28;
     --charcoal-light: #37352F;
     --gold: #B8894A;
@@ -453,6 +453,32 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
   }
   .site-footer a:hover { color: var(--gold-light); }
 
+  .fireflies { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
+  .firefly {
+    position: absolute;
+    width: var(--size, 5px); height: var(--size, 5px);
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--gold-light) 0%, var(--gold) 45%, transparent 75%);
+    box-shadow: 0 0 10px 3px rgba(184,137,74,.55), 0 0 22px 8px rgba(184,137,74,.22);
+    opacity: 0;
+    animation: firefly-drift var(--dur, 10s) ease-in-out infinite, firefly-flicker calc(var(--dur, 10s) * .4) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  @keyframes firefly-drift {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(calc(var(--dx, 30px) * .4), calc(var(--dy, -40px) * .6)); }
+    50% { transform: translate(var(--dx, 30px), var(--dy, -40px)); }
+    75% { transform: translate(calc(var(--dx, 30px) * .6), calc(var(--dy, -40px) * .3)); }
+    100% { transform: translate(0, 0); }
+  }
+  @keyframes firefly-flicker {
+    0%, 100% { opacity: .15; }
+    50% { opacity: .9; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .firefly { animation: none; opacity: .5; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
   }
@@ -616,6 +642,7 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
     </section>
 
     <section class="editorial" aria-labelledby="editorial-title">
+      <div class="fireflies" id="fireflies-editorial" aria-hidden="true"></div>
       <div class="wrap">
         <div class="editorial__head">
           <div class="eyebrow">O que fazemos</div>
@@ -1147,6 +1174,29 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
           tick();
         }
       });
+
+      function spawnFireflies(id, count) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        for (let i = 0; i < count; i += 1) {
+          const f = document.createElement("div");
+          f.className = "firefly";
+          const size = 3 + Math.random() * 5;
+          const dur = 7 + Math.random() * 8;
+          const delay = Math.random() * -dur;
+          const dx = (Math.random() - 0.5) * 90;
+          const dy = -(30 + Math.random() * 70);
+          f.style.setProperty("--size", size.toFixed(1) + "px");
+          f.style.setProperty("--dur", dur.toFixed(1) + "s");
+          f.style.setProperty("--delay", delay.toFixed(1) + "s");
+          f.style.setProperty("--dx", dx.toFixed(0) + "px");
+          f.style.setProperty("--dy", dy.toFixed(0) + "px");
+          f.style.left = (Math.random() * 100) + "%";
+          f.style.top = (Math.random() * 100) + "%";
+          el.appendChild(f);
+        }
+      }
+      spawnFireflies("fireflies-editorial", 22);
 
       init();
     })();

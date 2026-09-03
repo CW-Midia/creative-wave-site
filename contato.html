@@ -17,7 +17,7 @@
 <meta name="twitter:title" content="Contato — Creative Wave | Marketing Digital em Itajaí/SC">
 <meta name="twitter:description" content="Fale com a Creative Wave e comece seu projeto de branding, site ou tráfego pago.">
 <meta name="twitter:image" content="https://www.creativewaveagencia.com.br/assets/logo-transparent.png">
-<meta name="theme-color" content="#1C1B19">
+<meta name="theme-color" content="#0A0A0A">
 <link rel="icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -60,7 +60,7 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
 <!-- End Meta Pixel Code -->
 <style>
   :root {
-    --charcoal-deep: #1C1B19;
+    --charcoal-deep: #0A0A0A;
     --charcoal: #2B2A28;
     --charcoal-light: #37352F;
     --gold: #B8894A;
@@ -92,6 +92,32 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
   .btn-primary { background: var(--gold); color: var(--charcoal-deep); }
   .glass { background: var(--glass-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid var(--glass-border); border-radius: 20px; }
   html { scroll-behavior: smooth; }
+
+  .fireflies { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
+  .firefly {
+    position: absolute;
+    width: var(--size, 5px); height: var(--size, 5px);
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--gold-light) 0%, var(--gold) 45%, transparent 75%);
+    box-shadow: 0 0 10px 3px rgba(184,137,74,.55), 0 0 22px 8px rgba(184,137,74,.22);
+    opacity: 0;
+    animation: firefly-drift var(--dur, 10s) ease-in-out infinite, firefly-flicker calc(var(--dur, 10s) * .4) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  @keyframes firefly-drift {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(calc(var(--dx, 30px) * .4), calc(var(--dy, -40px) * .6)); }
+    50% { transform: translate(var(--dx, 30px), var(--dy, -40px)); }
+    75% { transform: translate(calc(var(--dx, 30px) * .6), calc(var(--dy, -40px) * .3)); }
+    100% { transform: translate(0, 0); }
+  }
+  @keyframes firefly-flicker {
+    0%, 100% { opacity: .15; }
+    50% { opacity: .9; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .firefly { animation: none; opacity: .5; }
+  }
 
   .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
   .field label { font-size: 13px; color: var(--gray-text); font-weight: 600; letter-spacing: .02em; }
@@ -130,7 +156,7 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
   <div style="position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(120% 90% at 50% 0%, rgba(10,9,8,0) 0%, rgba(10,9,8,.5) 100%);"></div>
 
   <!-- NAV -->
-  <nav style="position: sticky; top: 0; z-index: 100; background: rgba(28,27,25,.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--glass-border);">
+  <nav style="position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--glass-border);">
     <div class="wrap" style="display: flex; align-items: center; justify-content: space-between; height: 76px;">
       <a href="index.html" style="display: flex; align-items: center; gap: 12px;">
         <span style="font-family: var(--font-display); font-size: 1.05rem; letter-spacing: .02em; color: var(--offwhite);">Creative Wave</span>
@@ -146,7 +172,8 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
   </nav>
 
   <!-- HERO -->
-  <header style="padding: 110px 0 60px;">
+  <header style="padding: 110px 0 60px; position: relative; overflow: hidden;">
+    <div class="fireflies" id="fireflies-hero" aria-hidden="true"></div>
     <div class="wrap">
       <div class="eyebrow" style="margin-bottom: 18px;">Contato</div>
       <h1 style="font-size: clamp(2.1rem, 4.2vw, 3.2rem); letter-spacing: -.01em; margin-bottom: 16px; max-width: 640px;">Vamos conversar sobre o seu projeto</h1>
@@ -274,5 +301,31 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
 </div>
 
 <script src="script.js"></script>
+<script>
+  (function () {
+    function spawnFireflies(id, count) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      for (var i = 0; i < count; i += 1) {
+        var f = document.createElement("div");
+        f.className = "firefly";
+        var size = 3 + Math.random() * 5;
+        var dur = 7 + Math.random() * 8;
+        var delay = Math.random() * -dur;
+        var dx = (Math.random() - 0.5) * 90;
+        var dy = -(30 + Math.random() * 70);
+        f.style.setProperty("--size", size.toFixed(1) + "px");
+        f.style.setProperty("--dur", dur.toFixed(1) + "s");
+        f.style.setProperty("--delay", delay.toFixed(1) + "s");
+        f.style.setProperty("--dx", dx.toFixed(0) + "px");
+        f.style.setProperty("--dy", dy.toFixed(0) + "px");
+        f.style.left = (Math.random() * 100) + "%";
+        f.style.top = (Math.random() * 100) + "%";
+        el.appendChild(f);
+      }
+    }
+    spawnFireflies("fireflies-hero", 9);
+  })();
+</script>
 </body>
 </html>
