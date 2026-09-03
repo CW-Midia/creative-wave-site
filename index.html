@@ -517,12 +517,23 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
       animation-iteration-count: 1 !important;
       transition-duration: .01ms !important;
     }
-    .sequence { height: 100svh; }
-    .chapter:not(.chapter--hero) { display: none; }
-    .chapter--hero { visibility: visible; }
-    .chapter--hero .reveal > span { transform: translateY(0); }
-    .telemetry { display: none; }
   }
+
+  html.rm-static .sequence { height: 100svh; }
+  html.rm-static .chapter:not(.chapter--hero) { display: none; }
+  html.rm-static .chapter--hero { visibility: visible; }
+  html.rm-static .chapter--hero .reveal > span { transform: translateY(0); }
+  html.rm-static .telemetry { display: none; }
+
+  .enable-motion {
+    display: none;
+    margin-top: 22px;
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    color: var(--offwhite);
+  }
+  .enable-motion:hover { background: var(--glass-bg); }
+  html.rm-static .enable-motion { display: inline-flex; }
 </style>
 </head>
 <body class="is-loading">
@@ -557,6 +568,7 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
               <p class="chapter__eyebrow micro">Creative Wave / Marketing de performance</p>
               <h1 class="chapter__title reveal"><span>Invisível.</span></h1>
               <p class="chapter__deck reveal"><span>Todo negócio sem estratégia digital começa exatamente aqui: no escuro, esperando ser encontrado por acaso.</span></p>
+              <button type="button" class="cta enable-motion" id="enable-motion-btn">Ver com animação →</button>
             </div>
           </article>
 
@@ -772,36 +784,6 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
     (() => {
       "use strict";
 
-      function showDebugBanner(msg) {
-        let el = document.getElementById("debug-banner");
-        if (!el) {
-          el = document.createElement("div");
-          el.id = "debug-banner";
-          el.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:99999;background:#b0392b;color:#fff;padding:10px 14px;font:12px/1.4 monospace;white-space:pre-wrap;word-break:break-word;max-height:60vh;overflow:auto;";
-          (document.body || document.documentElement).appendChild(el);
-        }
-        el.textContent += msg + "\n\n";
-      }
-
-      window.addEventListener("error", (e) => {
-        showDebugBanner("ERRO: " + e.message + " @ " + (e.filename || "?") + ":" + e.lineno + ":" + e.colno);
-      });
-      window.addEventListener("unhandledrejection", (e) => {
-        const reason = e.reason && e.reason.stack ? e.reason.stack : String(e.reason);
-        showDebugBanner("PROMISE REJEITADA: " + reason);
-      });
-
-      let debugEl = null;
-      function updateDebugReadout(text) {
-        if (!debugEl) {
-          debugEl = document.createElement("div");
-          debugEl.id = "debug-readout";
-          debugEl.style.cssText = "position:fixed;bottom:0;left:0;right:0;z-index:99998;background:rgba(0,0,0,.85);color:#0f0;padding:8px 10px;font:10px/1.4 monospace;white-space:pre-wrap;pointer-events:none;";
-          (document.body || document.documentElement).appendChild(debugEl);
-        }
-        debugEl.textContent = text;
-      }
-
       const FRAME_COUNT = 110;
       const FRAME_PAD = 4;
       const LERP_FACTOR = 0.115;
@@ -821,7 +803,7 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
       const loaderCount = document.getElementById("loader-count");
       const loaderLabel = document.getElementById("loader-label");
       const chapters = Array.from(document.querySelectorAll(".chapter"));
-      const reducedMotion = window.matchMedia(REDUCED_QUERY).matches;
+      let reducedMotion = window.matchMedia(REDUCED_QUERY).matches;
       const mobileMedia = window.matchMedia(MOBILE_QUERY);
       const frameStores = {
         desktop: createFrameStore("frames/desktop"),
@@ -1039,20 +1021,6 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
       }
 
       function stepFrame() {
-        const rect = sequence.getBoundingClientRect();
-        const loadedCount = activeStore.loaded.reduce((a, b) => a + b, 0);
-        updateDebugReadout(
-          "scrollY=" + Math.round(window.scrollY) +
-          " rectTop=" + Math.round(rect.top) +
-          " rectH=" + Math.round(rect.height) +
-          " winH=" + window.innerHeight +
-          "\npageVisible=" + pageVisible +
-          " reducedMotion=" + reducedMotion +
-          " mobile=" + useMobileFrames +
-          " loaded=" + loadedCount + "/" + FRAME_COUNT +
-          "\ncurrentFrame=" + currentFrame.toFixed(1) +
-          " targetFrame=" + targetFrame
-        );
         if (!pageVisible || reducedMotion) return;
         const raw = rawScrollProgress();
         const effective = remapProgress(raw);
@@ -1070,24 +1038,7 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
         rafId = requestAnimationFrame(tick);
       }
 
-      async function init() {
-        buildDwellLut();
-        resizeCanvas();
-        updateSequenceMetrics();
-        setLoaderProgress(0.06);
-
-        if (reducedMotion) {
-          const posterFrame = Math.round(0.5 * (FRAME_COUNT - 1));
-          const poster = await loadFrame(posterFrame);
-          if (!poster) {
-            showLoadError();
-            return;
-          }
-          renderReducedPoster(posterFrame);
-          dismissLoader();
-          return;
-        }
-
+      async function startFullExperience() {
         const critical = Array.from(new Set([
           0,
           ...DWELL_CENTERS.map((center) => Math.round(center * (FRAME_COUNT - 1))),
@@ -1115,12 +1066,55 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
           return;
         }
         drawFrame(readyFrame);
-        dismissLoader();
         tick();
 
         const remaining = Array.from({ length: FRAME_COUNT }, (_, index) => index)
           .filter((index) => !critical.includes(index));
         loadInBatches(remaining);
+      }
+
+      async function enableAnimation() {
+        if (!reducedMotion) return;
+        reducedMotion = false;
+        document.documentElement.classList.remove("rm-static");
+        chapters.forEach((chapter) => {
+          if (chapter.classList.contains("chapter--hero")) return;
+          chapterVisibility.set(chapter, false);
+          chapter.classList.remove("is-visible");
+          chapter.setAttribute("aria-hidden", "true");
+        });
+        currentFrame = 0;
+        targetFrame = 0;
+        lastDrawn = -1;
+        resizeCanvas();
+        updateSequenceMetrics();
+        await startFullExperience();
+      }
+
+      async function init() {
+        buildDwellLut();
+        resizeCanvas();
+        updateSequenceMetrics();
+        setLoaderProgress(0.06);
+
+        const enableBtn = document.getElementById("enable-motion-btn");
+        if (enableBtn) enableBtn.addEventListener("click", enableAnimation);
+
+        if (reducedMotion) {
+          document.documentElement.classList.add("rm-static");
+          const posterFrame = Math.round(0.5 * (FRAME_COUNT - 1));
+          const poster = await loadFrame(posterFrame);
+          if (!poster) {
+            showLoadError();
+            return;
+          }
+          renderReducedPoster(posterFrame);
+          dismissLoader();
+          return;
+        }
+
+        await startFullExperience();
+        dismissLoader();
       }
 
       async function swapFrameSet(event) {
