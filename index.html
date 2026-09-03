@@ -1006,7 +1006,7 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
         });
       }
 
-      function tick() {
+      function stepFrame() {
         if (!pageVisible || reducedMotion) return;
         const raw = rawScrollProgress();
         const effective = remapProgress(raw);
@@ -1016,6 +1016,11 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
         drawFrame(frame);
         updateChapters(effective);
         updateInterface(raw, effective, frame);
+      }
+
+      function tick() {
+        stepFrame();
+        if (!pageVisible || reducedMotion) return;
         rafId = requestAnimationFrame(tick);
       }
 
@@ -1093,6 +1098,7 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
         resizeCanvas();
         updateSequenceMetrics();
       }, { passive: true });
+      window.addEventListener("scroll", stepFrame, { passive: true });
       mobileMedia.addEventListener("change", swapFrameSet);
       document.addEventListener("visibilitychange", () => {
         pageVisible = !document.hidden;
