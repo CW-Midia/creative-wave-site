@@ -56,9 +56,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const message = form.message.value.trim();
 
       const text =
-        `Olá! Me chamo ${name}.%0A` +
-        `Interesse: ${service}%0A` +
-        `WhatsApp: ${phone}%0A%0A` +
+        `Olá! Me chamo ${encodeURIComponent(name)}.%0A` +
+        `Interesse: ${encodeURIComponent(service)}%0A` +
+        `WhatsApp: ${encodeURIComponent(phone)}%0A%0A` +
         `${encodeURIComponent(message)}`;
 
       const waLink = `https://wa.me/5547988211597?text=${text}`;
