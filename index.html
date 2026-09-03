@@ -1006,12 +1006,12 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
         });
       }
 
-      function stepFrame(instant) {
+      function stepFrame() {
         if (!pageVisible || reducedMotion) return;
         const raw = rawScrollProgress();
         const effective = remapProgress(raw);
         targetFrame = Math.round(effective * (FRAME_COUNT - 1));
-        currentFrame = instant ? targetFrame : currentFrame + (targetFrame - currentFrame) * LERP_FACTOR;
+        currentFrame += (targetFrame - currentFrame) * LERP_FACTOR;
         const frame = Math.round(currentFrame);
         drawFrame(frame);
         updateChapters(effective);
@@ -1098,7 +1098,7 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
         resizeCanvas();
         updateSequenceMetrics();
       }, { passive: true });
-      window.addEventListener("scroll", () => stepFrame(true), { passive: true });
+      window.addEventListener("scroll", stepFrame, { passive: true });
       mobileMedia.addEventListener("change", swapFrameSet);
       document.addEventListener("visibilitychange", () => {
         pageVisible = !document.hidden;
