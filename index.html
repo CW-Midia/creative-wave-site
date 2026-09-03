@@ -958,7 +958,9 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
       }
 
       function rawScrollProgress() {
-        return Math.max(0, Math.min(1, (window.scrollY - sequenceTop) / sequenceDistance));
+        const rect = sequence.getBoundingClientRect();
+        const distance = Math.max(1, rect.height - window.innerHeight);
+        return Math.max(0, Math.min(1, -rect.top / distance));
       }
 
       function updateChapters(effective) {
