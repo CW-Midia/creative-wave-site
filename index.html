@@ -70,384 +70,1061 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
     --font-display: "Playfair Display", Georgia, serif;
     --font-body: "Inter", -apple-system, sans-serif;
     --glass-bg: rgba(55, 53, 47, .42);
-    --glass-border: rgba(242, 239, 233, .09);
+    --glass-border: rgba(242, 239, 233, .1);
+    --gutter: clamp(20px, 4.2vw, 72px);
+    --ease-out: cubic-bezier(.22, 1, .36, 1);
+    --line: rgba(242, 239, 233, .14);
+    --frame-progress: 0;
   }
-  * { box-sizing: border-box; }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    background: var(--charcoal-deep);
+    color: var(--offwhite);
+    font-family: var(--font-body);
+    scroll-behavior: auto;
+  }
+
   body {
-    margin: 0; font-family: var(--font-body); background: var(--charcoal-deep); color: var(--offwhite); line-height: 1.6;
+    margin: 0;
+    min-width: 320px;
+    background: var(--charcoal-deep);
+    color: var(--offwhite);
+    overflow-x: clip;
+    line-height: 1.6;
+  }
+
+  body.is-loading { overflow: hidden; }
+
+  a { color: inherit; text-decoration: none; }
+  button, a { -webkit-tap-highlight-color: transparent; }
+  :focus-visible { outline: 2px solid var(--gold-light); outline-offset: 4px; }
+
+  .micro {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+
+  .loader {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding: max(24px, env(safe-area-inset-top)) var(--gutter) max(24px, env(safe-area-inset-bottom));
+    background: var(--charcoal-deep);
+    transition: clip-path 900ms var(--ease-out), visibility 900ms;
+    clip-path: inset(0 0 0 0);
+  }
+
+  .loader.is-done { clip-path: inset(0 0 100% 0); visibility: hidden; }
+
+  .loader__mark {
+    align-self: center;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 24px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 18px;
+  }
+
+  .loader__number {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(80px, 18vw, 260px);
+    font-weight: 700;
+    letter-spacing: -.02em;
+    line-height: .9;
+    color: var(--gold);
+  }
+
+  .loader__meta { text-align: right; color: var(--gray-text); }
+
+  .loader__foot {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 18px;
+    padding-top: 22px;
+  }
+
+  .loader__track, .telemetry__track {
+    position: relative;
+    height: 1px;
+    overflow: hidden;
+    background: rgba(242, 239, 233, .18);
+  }
+
+  .loader__fill, .telemetry__fill {
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .site-header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 90;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 20px;
+    min-height: 70px;
+    padding: max(16px, env(safe-area-inset-top)) var(--gutter) 12px;
+    pointer-events: none;
+  }
+
+  .site-header__brand {
+    justify-self: start;
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    color: var(--offwhite);
+  }
+
+  .site-header__center { color: var(--gray-text); }
+  .site-header__end { justify-self: end; text-align: right; color: var(--gray-text); }
+
+  .sequence { position: relative; height: 650vh; background: var(--charcoal-deep); }
+
+  .stage {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100svh;
+    overflow: hidden;
+    background: #0A0A0A;
+    isolation: isolate;
+  }
+
+  #film-canvas { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; }
+
+  .stage__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(90deg, rgba(10,10,10,.62) 0%, rgba(10,10,10,.1) 38%, transparent 62%),
+      linear-gradient(0deg, rgba(10,10,10,.78) 0%, transparent 34%),
+      linear-gradient(180deg, rgba(10,10,10,.6) 0%, transparent 28%);
+    opacity: var(--scrim-opacity, .7);
+    transition: opacity 500ms ease;
+    pointer-events: none;
+  }
+
+  .stage__grid {
+    position: absolute;
+    inset: 0 var(--gutter);
+    z-index: 2;
+    background-image: repeating-linear-gradient(
+      90deg, transparent 0, transparent calc(8.333% - 1px),
+      rgba(242, 239, 233, .06) calc(8.333% - 1px), rgba(242, 239, 233, .06) 8.333%
+    );
+    opacity: .5;
+    pointer-events: none;
+  }
+
+  .mobile-aperture { display: none; }
+
+  .chapters { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+
+  .chapter {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-content: center;
+    column-gap: clamp(10px, 1.2vw, 20px);
+    padding: 96px var(--gutter) 104px;
+    visibility: hidden;
+  }
+
+  .chapter.is-visible { visibility: visible; }
+  .chapter__copy { position: relative; align-self: center; }
+
+  .chapter__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 20px;
+    color: var(--gold);
+  }
+
+  .reveal { overflow: hidden; padding-bottom: .1em; }
+  .reveal > span {
+    display: block;
+    transform: translateY(112%);
+    transition: transform 760ms var(--ease-out);
+  }
+  .reveal:nth-child(3) > span { transition-delay: 90ms; }
+  .chapter.is-visible .reveal > span { transform: translateY(0); }
+
+  .chapter__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(48px, 7.4vw, 118px);
+    font-weight: 700;
+    letter-spacing: -.01em;
+    line-height: .96;
+    text-wrap: balance;
+    text-shadow: 0 2px 3px rgba(10,9,8,.9), 0 8px 30px rgba(10,9,8,.8);
+  }
+
+  .chapter__deck {
+    max-width: 30rem;
+    margin: 22px 0 0;
+    font-size: clamp(16px, 1.4vw, 20px);
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--offwhite);
+    text-wrap: balance;
+  }
+
+  .chapter__fact {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 14px;
+    align-items: baseline;
+    margin-top: 28px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    color: var(--gray-text);
+    max-width: 28rem;
+  }
+  .chapter__fact span:first-child { color: var(--gold); font-weight: 700; }
+
+  .chapter--hero { align-content: end; }
+  .chapter--hero .chapter__copy { grid-column: 1 / 9; padding-bottom: 6vh; }
+  .chapter--hero .chapter__title { font-size: clamp(64px, 12vw, 168px); line-height: .88; }
+
+  .chapter--right .chapter__copy { grid-column: 7 / 13; }
+  .chapter--left .chapter__copy { grid-column: 1 / 7; }
+
+  .chapter--final {
+    align-content: end;
+    background: linear-gradient(0deg, rgba(10,10,10,.85), rgba(10,10,10,0) 66%);
+  }
+  .chapter--final .chapter__copy {
+    grid-column: 1 / 13;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 32px;
+    padding-bottom: 4vh;
+  }
+  .chapter--final .chapter__title { max-width: 8ch; }
+
+  .cta {
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 52px;
+    padding: 0 26px;
+    border-radius: 999px;
+    background: var(--gold);
+    color: var(--charcoal-deep);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: .01em;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 200ms ease, transform 200ms ease;
+  }
+  .cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  .telemetry {
+    position: absolute;
+    inset: auto var(--gutter) max(18px, env(safe-area-inset-bottom));
+    z-index: 8;
+    display: grid;
+    grid-template-columns: auto minmax(100px, 1fr) auto;
+    align-items: center;
+    gap: 18px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    pointer-events: none;
+  }
+
+  .telemetry__fill { transform: scaleX(var(--frame-progress)); will-change: transform; }
+  .telemetry__chapter { min-width: 13ch; color: var(--offwhite); }
+
+  .scroll-cue { display: inline-grid; grid-template-columns: auto 16px; align-items: center; gap: 8px; color: var(--offwhite); }
+  .scroll-cue::after {
+    content: "";
+    width: 16px; height: 16px;
+    border-right: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    transform: rotate(45deg) translate(-3px, 3px);
+    animation: cue 1.8s ease-in-out infinite;
+  }
+  @keyframes cue {
+    0%, 100% { transform: rotate(45deg) translate(-3px, 3px); opacity: .35; }
+    50% { transform: rotate(45deg) translate(1px, 7px); opacity: 1; }
+  }
+
+  /* ---- Post-sequence: matches cw-site's own charcoal/glass system ---- */
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+  .glass { background: var(--glass-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid var(--glass-border); border-radius: 20px; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+  h2, h3 { font-family: var(--font-display); font-weight: 700; color: var(--offwhite); line-height: 1.15; margin: 0; }
+  p { color: var(--gray-text); margin: 0; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 30px; font-size: 14px; font-weight: 600; border-radius: 999px; text-decoration: none; white-space: nowrap; }
+  .btn-primary { background: var(--gold); color: var(--charcoal-deep); }
+
+  .editorial {
+    position: relative;
+    z-index: 10;
+    padding: clamp(90px, 10vw, 140px) 0;
+    background: var(--charcoal-deep);
     background-image:
       linear-gradient(rgba(242,239,233,.035) 1px, transparent 1px),
       linear-gradient(90deg, rgba(242,239,233,.035) 1px, transparent 1px);
     background-size: 56px 56px;
   }
-  a { color: inherit; text-decoration: none; }
-  a:hover { color: var(--gold-light); }
-  a:focus-visible, button:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 2px; }
-  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
-  h1, h2, h3 { font-family: var(--font-display); font-weight: 700; color: var(--offwhite); line-height: 1.12; margin: 0; text-shadow: 0 2px 3px rgba(10,9,8,.9), 0 6px 24px rgba(10,9,8,.7); }
-  p { color: var(--gray-text); margin: 0; }
-  strong { color: var(--offwhite); font-weight: 700; }
-  .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
-  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 30px; font-size: 14px; font-weight: 600; letter-spacing: .03em; border-radius: 999px; border: 1px solid transparent; cursor: pointer; white-space: nowrap; }
-  .btn-primary { background: var(--gold); color: var(--charcoal-deep); }
-  .btn-ghost { background: var(--glass-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: var(--offwhite); border-color: var(--glass-border); }
-  .glass { background: var(--glass-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid var(--glass-border); border-radius: 20px; }
-  .micro-proof { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13px; color: var(--gray-text); }
+
+  .editorial__head { max-width: 640px; margin-bottom: 48px; }
+  .editorial__head h2 { font-size: clamp(1.8rem, 3.2vw, 2.6rem); margin-top: 14px; }
+
+  .micro-proof { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13px; color: var(--gray-text); margin-bottom: 56px; }
   .micro-proof b { color: var(--gold); font-weight: 700; }
   .micro-proof .dot { color: var(--charcoal-light); }
-  html { scroll-behavior: smooth; }
+
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 88px; }
+  .service-card { padding: 32px 28px; }
+  .service-card .icon-ring {
+    width: 44px; height: 44px; border: 1px solid var(--gold); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 18px; color: var(--gold);
+  }
+  .service-card h3 { font-size: 1.1rem; margin-bottom: 10px; }
+  .service-card p { font-size: .92rem; }
+
+  .section-block { margin-bottom: 88px; }
+  .section-block__head { max-width: 640px; margin-bottom: 44px; }
+  .section-block__head h2 { font-size: clamp(1.6rem, 2.8vw, 2.3rem); margin-top: 14px; }
+
+  .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .process-card { padding: 24px 22px; }
+  .process-card .num { font-family: var(--font-display); font-size: 2rem; color: var(--gold); margin-bottom: 14px; }
+  .process-card h3 { font-size: 1.05rem; margin-bottom: 8px; }
+  .process-card p { font-size: .9rem; }
+
+  .areas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .area-chip { padding: 20px; text-align: center; font-size: .95rem; font-weight: 500; border-radius: 999px; color: var(--offwhite); }
+
+  .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .faq-item { padding: 18px 22px; }
+  .faq-item summary { cursor: pointer; font-weight: 600; font-size: 1rem; color: var(--offwhite); }
+  .faq-item p { font-size: .9rem; margin-top: 10px; }
+
+  .final-cta { padding: 56px 48px; text-align: center; border-radius: 28px; margin-bottom: 60px; }
+  .final-cta h2 { font-size: clamp(1.6rem, 2.8vw, 2.2rem); margin-bottom: 14px; }
+  .final-cta p { max-width: 480px; margin: 0 auto 28px; }
+
+  .footer-card { padding: 48px 44px; border-radius: 28px; margin-bottom: 28px; }
+  .footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 40px; }
+  .footer-grid h3 { font-family: var(--font-body); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; font-weight: 600; }
+  .footer-links { display: flex; flex-direction: column; gap: 10px; }
+  .footer-links a, .footer-contact a { font-size: 14px; color: var(--gray-text); }
+  .footer-links a:hover, .footer-contact a:hover { color: var(--gold-light); }
+  .footer-contact { display: flex; flex-direction: column; gap: 14px; }
+  .footer-social { display: flex; gap: 10px; }
+  .footer-social a {
+    width: 38px; height: 38px; border-radius: 50%; background: var(--glass-bg); border: 1px solid var(--glass-border);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .site-footer {
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+    font-size: 13px; color: var(--gray-text); padding: 0 8px;
+  }
+  .site-footer a {
+    color: var(--offwhite); display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 16px; border-radius: 999px; border: 1px solid var(--glass-border); background: var(--glass-bg);
+    font-size: 12.5px;
+  }
+  .site-footer a:hover { color: var(--gold-light); }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
   }
+
   @media (max-width: 900px) {
-    .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+    .process-grid { grid-template-columns: repeat(2, 1fr); }
   }
-  @media (max-width: 640px) {
-    .wrap { padding: 0 20px; }
-    section, footer { padding: 56px 0 !important; }
-    header { padding: 100px 0 56px !important; }
-    .hero-grid, .grid-2, .grid-3, .grid-4, .footer-grid { grid-template-columns: 1fr !important; }
-    .hero-visual, .nav-links { display: none !important; }
+
+  @media (max-width: 780px) {
+    :root { --gutter: 20px; }
+    .site-header { grid-template-columns: 1fr auto; min-height: 58px; }
+    .site-header__center { display: none; }
+    .sequence { height: 560vh; }
+
+    .stage__scrim {
+      background:
+        linear-gradient(180deg, rgba(10,10,10,.5), transparent 22%),
+        linear-gradient(0deg, rgba(10,10,10,.85), transparent 30%);
+    }
+    .stage__grid { opacity: .3; }
+
+    .mobile-aperture {
+      position: absolute; z-index: 3; top: calc(45% - 28.125vw); left: 0;
+      display: block; width: 100%; height: 56.25vw;
+      border-top: 1px solid rgba(242, 239, 233, .18);
+      border-bottom: 1px solid rgba(242, 239, 233, .18);
+      pointer-events: none;
+    }
+
+    .chapter { grid-template-columns: repeat(6, minmax(0, 1fr)); align-content: end; padding: 76px var(--gutter) 100px; }
+    .chapter__copy, .chapter--hero .chapter__copy, .chapter--right .chapter__copy,
+    .chapter--left .chapter__copy, .chapter--final .chapter__copy { grid-column: 1 / 7; }
+
+    .chapter__title { font-size: clamp(44px, 14vw, 70px); line-height: .92; }
+    .chapter__deck { max-width: 22rem; margin-top: 12px; font-size: 16px; }
+    .chapter--hero { align-content: start; padding-top: 18vh; }
+    .chapter--hero .chapter__copy { padding-bottom: 0; }
+    .chapter--hero .chapter__title { font-size: clamp(56px, 20vw, 92px); }
+
+    .chapter--final { align-content: end; }
+    .chapter--final .chapter__copy { display: block; }
+    .chapter--final .chapter__title { max-width: 7ch; }
+    .chapter--final .cta { margin-top: 20px; }
+
+    .telemetry { grid-template-columns: auto 1fr auto; gap: 10px; padding: 8px 14px; }
+    .telemetry__chapter { min-width: 8ch; }
+    .scroll-cue { display: none; }
+
+    .loader__mark { display: block; }
+    .loader__number { font-size: 34vw; }
+    .loader__meta { margin-top: 20px; text-align: left; }
+
+    .services-grid { grid-template-columns: 1fr; }
+    .process-grid, .areas-grid, .faq-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .footer-card { padding: 32px 26px; }
+    .final-cta { padding: 40px 26px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      scroll-behavior: auto !important;
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+    }
+    .sequence { height: 100svh; }
+    .chapter:not(.chapter--hero) { display: none; }
+    .chapter--hero { visibility: visible; }
+    .chapter--hero .reveal > span { transform: translateY(0); }
+    .telemetry { display: none; }
   }
 </style>
 </head>
-<body>
-
-<div id="top">
-
-  <div style="position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(120% 90% at 50% 0%, rgba(10,9,8,0) 0%, rgba(10,9,8,.5) 100%);"></div>
-
-  <!-- NAV -->
-  <nav style="position: sticky; top: 0; z-index: 100; background: rgba(28,27,25,.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--glass-border);">
-    <div class="wrap" style="display: flex; align-items: center; justify-content: space-between; height: 76px;">
-      <a href="#top" style="display: flex; align-items: center; gap: 12px;">
-        <span style="font-family: var(--font-display); font-size: 1.05rem; letter-spacing: .02em; color: var(--offwhite);">Creative Wave</span>
-      </a>
-      <ul class="nav-links" style="display: flex; align-items: center; gap: 36px; list-style: none; margin: 0; padding: 0;">
-        <li><a href="#servicos" style="font-size: 14px; color: var(--gray-text); font-weight: 500;">Serviços</a></li>
-        <li><a href="#processo" style="font-size: 14px; color: var(--gray-text); font-weight: 500;">Processo</a></li>
-        <li><a href="sobre.html" style="font-size: 14px; color: var(--gray-text); font-weight: 500;">Sobre</a></li>
-        <li><a href="#contato" style="font-size: 14px; color: var(--gray-text); font-weight: 500;">Contato</a></li>
-      </ul>
-      <a class="btn btn-primary" href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer">Falar no WhatsApp</a>
+<body class="is-loading">
+  <div class="loader" id="loader" aria-label="Carregando a sequência de imagens">
+    <div class="loader__mark">
+      <p class="loader__number" aria-hidden="true">CW</p>
+      <div class="loader__meta">Creative Wave<br>Sequência de marca<br>8.04 segundos</div>
     </div>
-  </nav>
+    <div class="loader__foot">
+      <span class="micro" id="loader-label">Preparando o filme</span>
+      <div class="loader__track" aria-hidden="true"><span class="loader__fill" id="loader-fill"></span></div>
+      <span class="micro" id="loader-count">000%</span>
+    </div>
+  </div>
 
-  <!-- HERO -->
-  <header style="padding: 130px 0 110px; position: relative; overflow: hidden;">
-    <div class="wrap hero-grid" style="display: grid; grid-template-columns: 1.05fr .95fr; gap: 40px; align-items: center; position: relative; z-index: 1;">
-      <div>
-        <div class="eyebrow" style="margin-bottom: 18px;">Marketing de Performance</div>
-        <h1 style="font-size: clamp(2.4rem, 5vw, 4.2rem); letter-spacing: -.01em; margin-bottom: 22px;">Sites que vendem.<br>Tráfego que <span style="color: var(--gold);">converte</span>.</h1>
-        <p style="font-size: 1.15rem; color: #C7C0B2; line-height: 1.7; max-width: 480px; margin-bottom: 30px;">Criamos <strong>sites de alta conversão</strong> e gerimos <strong>tráfego pago</strong> com decisões orientadas por dados — para negócios que já entendem que crescer exige investimento, não sorte.</p>
-        <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 18px;">
-          <a class="btn btn-primary" href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer">Falar no WhatsApp →</a>
-          <a class="btn btn-ghost" href="#servicos">Ver serviços</a>
+  <header class="site-header" aria-label="Informações do projeto">
+    <div class="site-header__brand">Creative Wave</div>
+    <div class="site-header__center micro">Do invisível ao inevitável</div>
+  </header>
+
+  <main>
+    <section class="sequence" id="sequence" aria-label="Filme controlado pelo scroll">
+      <div class="stage" id="stage">
+        <canvas id="film-canvas" role="img" aria-label="Uma onda de luz dourada nasce do escuro e ganha força conforme a página rola"></canvas>
+        <div class="stage__scrim" aria-hidden="true"></div>
+        <div class="stage__grid" aria-hidden="true"></div>
+        <div class="mobile-aperture" aria-hidden="true"></div>
+
+        <div class="chapters" aria-live="off">
+          <article class="chapter chapter--hero" data-center="0.05" data-window="0.09" data-label="Invisível">
+            <div class="chapter__copy">
+              <p class="chapter__eyebrow micro">Creative Wave / Marketing de performance</p>
+              <h1 class="chapter__title reveal"><span>Invisível.</span></h1>
+              <p class="chapter__deck reveal"><span>Todo negócio sem estratégia digital começa exatamente aqui: no escuro, esperando ser encontrado por acaso.</span></p>
+            </div>
+          </article>
+
+          <article class="chapter chapter--right" data-center="0.26" data-window="0.09" data-label="Primeiro sinal">
+            <div class="chapter__copy">
+              <p class="chapter__eyebrow micro">O primeiro sinal</p>
+              <h2 class="chapter__title reveal"><span>Um sinal</span></h2>
+              <p class="chapter__deck reveal"><span>Um site, uma campanha, um perfil otimizado. O começo de existir onde o seu cliente já está procurando.</span></p>
+              <div class="chapter__fact micro"><span>01</span><span>Presença digital estruturada, não improvisada</span></div>
+            </div>
+          </article>
+
+          <article class="chapter chapter--left" data-center="0.5" data-window="0.1" data-label="Ganha força">
+            <div class="chapter__copy">
+              <p class="chapter__eyebrow micro">Como isso funciona</p>
+              <h2 class="chapter__title reveal"><span>Ganha força.</span></h2>
+              <p class="chapter__deck reveal"><span>Um site sozinho não vende. Tráfego sozinho não converte. Juntos, com decisões orientadas por dados, o resultado se sustenta.</span></p>
+            </div>
+          </article>
+
+          <article class="chapter chapter--right" data-center="0.72" data-window="0.09" data-label="Vira alcance">
+            <div class="chapter__copy">
+              <p class="chapter__eyebrow micro">Vira alcance</p>
+              <h2 class="chapter__title reveal"><span>Vira alcance</span></h2>
+              <p class="chapter__deck reveal"><span>O que era invisível começa a aparecer primeiro, no Google, no feed, na cabeça do cliente certo.</span></p>
+              <div class="chapter__fact micro"><span>02</span><span>Crescimento sustentado, não um pico isolado</span></div>
+            </div>
+          </article>
+
+          <article class="chapter chapter--final" data-center="0.93" data-window="0.08" data-label="Inevitável">
+            <div class="chapter__copy">
+              <div>
+                <p class="chapter__eyebrow micro">O resultado</p>
+                <h2 class="chapter__title reveal"><span>Inevitável.</span></h2>
+              </div>
+              <a class="cta" href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20filme%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer">Falar no WhatsApp →</a>
+            </div>
+          </article>
         </div>
+
+        <div class="telemetry" aria-hidden="true">
+          <span class="telemetry__chapter micro" id="telemetry-chapter">Invisível</span>
+          <div class="telemetry__track"><span class="telemetry__fill"></span></div>
+          <span class="scroll-cue micro">Role para continuar</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="editorial" aria-labelledby="editorial-title">
+      <div class="wrap">
+        <div class="editorial__head">
+          <div class="eyebrow">O que fazemos</div>
+          <h2 id="editorial-title">Três frentes, um só objetivo: crescimento</h2>
+        </div>
+
         <div class="micro-proof">
           <b>✓</b> Orçamento sem compromisso <span class="dot">·</span>
           <b>✓</b> Resposta em até 24h <span class="dot">·</span>
           <b>✓</b> Sem fidelidade contratual
         </div>
-      </div>
 
-      <div class="hero-visual" style="position: relative; height: 420px;">
-        <svg aria-hidden="true" width="100%" height="100%" viewBox="0 0 420 380" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; inset: 0; opacity: .8;">
-          <path d="M20 320 L100 220 L160 270 L230 150 L290 190 L380 40" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
-          <path d="M355 55 L380 40 L370 68" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
-          <circle cx="100" cy="220" r="6" fill="var(--charcoal-deep)" stroke="var(--gold)" stroke-width="2"></circle>
-          <circle cx="160" cy="270" r="6" fill="var(--charcoal-deep)" stroke="var(--gold)" stroke-width="2"></circle>
-          <circle cx="230" cy="150" r="6" fill="var(--charcoal-deep)" stroke="var(--gold)" stroke-width="2"></circle>
-          <circle cx="290" cy="190" r="6" fill="var(--charcoal-deep)" stroke="var(--gold)" stroke-width="2"></circle>
-        </svg>
-
-        <div class="glass" style="position: absolute; top: 24px; right: 10px; width: 220px; padding: 18px 20px; transform: rotate(-4deg); box-shadow: 0 20px 44px rgba(0,0,0,.35);">
-          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><path d="M17 7l3-2"></path></svg>
-            <span style="font-size: 13px; font-weight: 600;">Tráfego pago</span>
+        <div class="services-grid">
+          <div class="glass service-card">
+            <div class="icon-ring">
+              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="1"></rect><path d="M3 8h18"></path></svg>
+            </div>
+            <h3>Criação de Sites</h3>
+            <p>Construídos pra vender. Rápido, responsivo, sem modelo genérico.</p>
           </div>
-          <p style="font-size: 12.5px; line-height: 1.5;">Campanhas construídas pra captar quem ainda não te conhece.</p>
-        </div>
-
-        <div class="glass" style="position: absolute; bottom: 34px; left: 0; width: 232px; padding: 18px 20px; transform: rotate(3deg); box-shadow: 0 20px 44px rgba(0,0,0,.35);">
-          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="1"></rect><path d="M3 8h18"></path></svg>
-            <span style="font-size: 13px; font-weight: 600;">Sites que vendem</span>
+          <div class="glass service-card">
+            <div class="icon-ring">
+              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><path d="M17 7l3-2"></path></svg>
+            </div>
+            <h3>Gestão de Tráfego Pago</h3>
+            <p>Campanhas construídas pra captar e converter quem ainda não te conhece.</p>
           </div>
-          <p style="font-size: 12.5px; line-height: 1.5;">Desenhados com um único objetivo: converter visita em cliente.</p>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div style="line-height: 0; margin-top: -1px;"><svg aria-hidden="true" viewBox="0 0 1200 60" preserveAspectRatio="none" style="width: 100%; height: 32px; display: block;"><path d="M0,30 C150,60 350,0 600,30 C850,60 1050,0 1200,30" fill="none" stroke="var(--gold)" stroke-width="1.5" opacity=".45"></path></svg></div>
-
-  <main>
-  <!-- DIFERENCIAIS (grid) -->
-  <section style="padding: 88px 0;">
-    <div class="wrap">
-      <div style="max-width: 640px; margin-bottom: 52px;">
-        <div class="eyebrow" style="margin-bottom: 18px;">Por que a Creative Wave</div>
-        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.6rem);">Seis motivos pra não contratar mais uma agência genérica</h2>
-      </div>
-      <div class="grid-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
-        <div class="glass" style="padding: 28px 26px;">
-          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" style="margin-bottom: 16px;"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1" fill="var(--gold)"></circle></svg>
-          <h3 style="font-size: 1.05rem; margin-bottom: 8px;">Estratégia sob medida</h3>
-          <p style="font-size: .9rem;">Nada de pacote genérico. Cada projeto parte de um diagnóstico real do seu negócio.</p>
-        </div>
-        <div class="glass" style="padding: 28px 26px;">
-          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" style="margin-bottom: 16px;"><path d="M4 19V9M12 19V4M20 19v-6"></path></svg>
-          <h3 style="font-size: 1.05rem; margin-bottom: 8px;">Orientado a dados</h3>
-          <p style="font-size: .9rem;">Cada decisão de design e de campanha é validada por métricas reais, não por achismo.</p>
-        </div>
-        <div class="glass" style="padding: 28px 26px;">
-          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" style="margin-bottom: 16px;"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>
-          <h3 style="font-size: 1.05rem; margin-bottom: 8px;">Frentes integradas</h3>
-          <p style="font-size: .9rem;">Marca, site e tráfego trabalhando juntos — nunca isolados um do outro.</p>
-        </div>
-        <div class="glass" style="padding: 28px 26px;">
-          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" style="margin-bottom: 16px;"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
-          <h3 style="font-size: 1.05rem; margin-bottom: 8px;">Resposta em até 24h</h3>
-          <p style="font-size: .9rem;">Contato rápido pelo WhatsApp, sem enrolação nem departamento de espera.</p>
-        </div>
-        <div class="glass" style="padding: 28px 26px;">
-          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" style="margin-bottom: 16px;"><path d="M12 2l3 6.5 7 1-5 5 1.5 7-6.5-3.5L5 21.5 6.5 14.5l-5-5 7-1z"></path></svg>
-          <h3 style="font-size: 1.05rem; margin-bottom: 8px;">Sem fidelidade contratual</h3>
-          <p style="font-size: .9rem;">Você fica pelo resultado entregue, não por obrigação de contrato.</p>
-        </div>
-        <div class="glass" style="padding: 28px 26px;">
-          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" style="margin-bottom: 16px;"><rect x="3" y="4" width="18" height="16" rx="1"></rect><path d="M3 9h18"></path></svg>
-          <h3 style="font-size: 1.05rem; margin-bottom: 8px;">Domínio no seu nome</h3>
-          <p style="font-size: .9rem;">Site e hospedagem registrados em seu nome — controle total do seu ativo digital.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROBLEMA -->
-  <section style="padding: 88px 0;">
-    <div class="wrap">
-      <div style="max-width: 640px; margin-bottom: 52px;">
-        <div class="eyebrow" style="margin-bottom: 18px;">O custo do invisível</div>
-        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.6rem);">Cada busca sem resposta é um cliente que escolheu outro</h2>
-      </div>
-      <div class="grid-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-        <div class="glass" style="padding: 36px 32px;">
-          <h3 style="font-size: 1.3rem; margin-bottom: 20px;">Sem presença digital</h3>
-          <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px;">
-            <li style="display: flex; gap: 10px; font-size: .95rem; color: var(--gray-text);"><span style="color: var(--gray-text); font-weight: 700;">✕</span>Buscas no Google retornam só concorrentes</li>
-            <li style="display: flex; gap: 10px; font-size: .95rem; color: var(--gray-text);"><span style="color: var(--gray-text); font-weight: 700;">✕</span>Sem canal direto, oportunidades se perdem</li>
-            <li style="display: flex; gap: 10px; font-size: .95rem; color: var(--gray-text);"><span style="color: var(--gray-text); font-weight: 700;">✕</span>Você existe — mas a internet não sabe disso</li>
-            <li style="display: flex; gap: 10px; font-size: .95rem; color: var(--gray-text);"><span style="color: var(--gray-text); font-weight: 700;">✕</span>Depende só do algoritmo do Instagram pra ser visto</li>
-          </ul>
-        </div>
-        <div class="glass" style="padding: 36px 32px;">
-          <h3 style="font-size: 1.3rem; margin-bottom: 20px;">Com Creative Wave</h3>
-          <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px;">
-            <li style="display: flex; gap: 10px; font-size: .95rem; color: var(--offwhite);"><span style="color: var(--gold); font-weight: 700;">✓</span>Site profissional gera confiança em segundos</li>
-            <li style="display: flex; gap: 10px; font-size: .95rem; color: var(--offwhite);"><span style="color: var(--gold); font-weight: 700;">✓</span>Botão de WhatsApp direto, sem atrito</li>
-            <li style="display: flex; gap: 10px; font-size: .95rem; color: var(--offwhite);"><span style="color: var(--gold); font-weight: 700;">✓</span>Google trabalhando 24h por você</li>
-            <li style="display: flex; gap: 10px; font-size: .95rem; color: var(--offwhite);"><span style="color: var(--gold); font-weight: 700;">✓</span>Presença própria, independente de algoritmo</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SERVIÇOS -->
-  <section id="servicos" style="padding: 88px 0;">
-    <div class="wrap">
-      <div style="max-width: 640px; margin-bottom: 52px;">
-        <div class="eyebrow" style="margin-bottom: 18px;">O que fazemos</div>
-        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.6rem);">Três frentes, um só objetivo: crescimento</h2>
-      </div>
-      <div class="grid-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
-        <div class="glass" style="padding: 36px 32px;">
-          <div style="width: 48px; height: 48px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 22px; color: var(--gold);">
-            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="1"></rect><path d="M3 8h18"></path></svg>
+          <div class="glass service-card">
+            <div class="icon-ring">
+              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"></circle><path d="M12 3a6 9 0 000 18 6 9 0 000-18z"></path><path d="M3 12h18"></path></svg>
+            </div>
+            <h3>Branding e Identidade Visual</h3>
+            <p>Marca construída com intenção. Logo, paleta, tipografia, guia de uso.</p>
           </div>
-          <h3 style="margin-bottom: 12px;">Criação de Sites</h3>
-          <p style="font-size: .95rem;">Todo dia sem um site profissional é um cliente que foi pro concorrente. Construímos o seu pra vender — rápido, responsivo, sem modelo genérico.</p>
         </div>
-        <div class="glass" style="padding: 36px 32px;">
-          <div style="width: 48px; height: 48px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 22px; color: var(--gold);">
-            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><path d="M17 7l3-2"></path></svg>
+
+        <div class="section-block">
+          <div class="section-block__head">
+            <div class="eyebrow">Como trabalhamos</div>
+            <h2>Um processo claro, do diagnóstico ao resultado</h2>
           </div>
-          <h3 style="margin-bottom: 12px;">Gestão de Tráfego Pago</h3>
-          <p style="font-size: .95rem;">Esperar o cliente aparecer sozinho não é estratégia, é sorte. Campanhas pagas construídas pra captar e converter quem ainda não te conhece.</p>
-        </div>
-        <div class="glass" style="padding: 36px 32px;">
-          <div style="width: 48px; height: 48px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 22px; color: var(--gold);">
-            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"></circle><path d="M12 3a6 9 0 000 18 6 9 0 000-18z"></path><path d="M3 12h18"></path></svg>
+          <div class="process-grid">
+            <div class="glass process-card">
+              <div class="num">01</div>
+              <h3>Diagnóstico</h3>
+              <p>Entendemos seu negócio, público e objetivos antes de propor qualquer solução.</p>
+            </div>
+            <div class="glass process-card">
+              <div class="num">02</div>
+              <h3>Estratégia</h3>
+              <p>Definimos o plano de site e/ou tráfego com metas e métricas claras de sucesso.</p>
+            </div>
+            <div class="glass process-card">
+              <div class="num">03</div>
+              <h3>Execução</h3>
+              <p>Construímos o site e/ou lançamos as campanhas com acompanhamento próximo.</p>
+            </div>
+            <div class="glass process-card">
+              <div class="num">04</div>
+              <h3>Otimização</h3>
+              <p>Analisamos os dados e ajustamos continuamente para melhorar o resultado.</p>
+            </div>
           </div>
-          <h3 style="margin-bottom: 12px;">Branding e Identidade Visual</h3>
-          <p style="font-size: .95rem;">Marca sem identidade clara perde venda antes da primeira conversa. Construímos do zero ou reposicionamos o que já existe — logo, paleta, tipografia, guia de uso.</p>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- PROCESSO (grid) -->
-  <section id="processo" style="padding: 88px 0;">
-    <div class="wrap">
-      <div style="max-width: 640px; margin-bottom: 52px;">
-        <div class="eyebrow" style="margin-bottom: 18px;">Como trabalhamos</div>
-        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.6rem);">Um processo claro, do diagnóstico ao resultado</h2>
-      </div>
-      <div class="grid-4" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
-        <div class="glass" style="padding: 24px 22px;">
-          <div style="font-family: var(--font-display); font-size: 2rem; color: var(--gold); margin-bottom: 14px;">01</div>
-          <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Diagnóstico</h3>
-          <p style="font-size: .9rem;">Entendemos seu negócio, público e objetivos antes de propor qualquer solução.</p>
+        <div class="section-block">
+          <div class="section-block__head">
+            <div class="eyebrow">Pra quem é</div>
+            <h2>Ideal pra negócios como o seu</h2>
+          </div>
+          <div class="areas-grid">
+            <div class="glass area-chip">Comércio local</div>
+            <div class="glass area-chip">Serviços profissionais</div>
+            <div class="glass area-chip">Saúde e bem-estar</div>
+            <div class="glass area-chip">Alimentação</div>
+            <div class="glass area-chip">Moda e beleza</div>
+            <div class="glass area-chip">Imobiliário</div>
+          </div>
         </div>
-        <div class="glass" style="padding: 24px 22px;">
-          <div style="font-family: var(--font-display); font-size: 2rem; color: var(--gold); margin-bottom: 14px;">02</div>
-          <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Estratégia</h3>
-          <p style="font-size: .9rem;">Definimos o plano de site e/ou tráfego com metas e métricas claras de sucesso.</p>
-        </div>
-        <div class="glass" style="padding: 24px 22px;">
-          <div style="font-family: var(--font-display); font-size: 2rem; color: var(--gold); margin-bottom: 14px;">03</div>
-          <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Execução</h3>
-          <p style="font-size: .9rem;">Construímos o site e/ou lançamos as campanhas com acompanhamento próximo.</p>
-        </div>
-        <div class="glass" style="padding: 24px 22px;">
-          <div style="font-family: var(--font-display); font-size: 2rem; color: var(--gold); margin-bottom: 14px;">04</div>
-          <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Otimização</h3>
-          <p style="font-size: .9rem;">Analisamos os dados e ajustamos continuamente para melhorar o resultado.</p>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- ÁREAS DE ATUAÇÃO (grid) -->
-  <section style="padding: 88px 0;">
-    <div class="wrap">
-      <div style="max-width: 640px; margin-bottom: 48px;">
-        <div class="eyebrow" style="margin-bottom: 18px;">Pra quem é</div>
-        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.6rem);">Ideal pra negócios como o seu</h2>
-      </div>
-      <div class="grid-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
-        <div class="glass" style="padding: 20px; text-align: center; font-size: .95rem; font-weight: 500; border-radius: 999px;">Comércio local</div>
-        <div class="glass" style="padding: 20px; text-align: center; font-size: .95rem; font-weight: 500; border-radius: 999px;">Serviços profissionais</div>
-        <div class="glass" style="padding: 20px; text-align: center; font-size: .95rem; font-weight: 500; border-radius: 999px;">Saúde e bem-estar</div>
-        <div class="glass" style="padding: 20px; text-align: center; font-size: .95rem; font-weight: 500; border-radius: 999px;">Alimentação</div>
-        <div class="glass" style="padding: 20px; text-align: center; font-size: .95rem; font-weight: 500; border-radius: 999px;">Moda e beleza</div>
-        <div class="glass" style="padding: 20px; text-align: center; font-size: .95rem; font-weight: 500; border-radius: 999px;">Imobiliário</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ (grid) -->
-  <section style="padding: 88px 0;">
-    <div class="wrap">
-      <div style="max-width: 640px; margin-bottom: 48px;">
-        <div class="eyebrow" style="margin-bottom: 18px;">Perguntas frequentes</div>
-        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.6rem);">Antes de falar com a gente, tire suas dúvidas</h2>
-      </div>
-      <div class="grid-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-        <details class="glass" style="padding: 18px 22px;" open>
-          <summary style="cursor: pointer; font-weight: 600; font-size: 1rem; color: var(--offwhite);">Quanto custa um site ou uma campanha de tráfego?</summary>
-          <p style="font-size: .9rem; margin-top: 10px;">Cada projeto é orçado sob medida, depois de entendermos seu negócio e objetivo. Fale com a gente pelo WhatsApp e receba uma proposta sem compromisso.</p>
-        </details>
-        <details class="glass" style="padding: 18px 22px;">
-          <summary style="cursor: pointer; font-weight: 600; font-size: 1rem; color: var(--offwhite);">Quanto tempo leva para o site ficar pronto?</summary>
-          <p style="font-size: .9rem; margin-top: 10px;">Em média, entre 3 e 7 dias úteis, dependendo da complexidade do projeto e da rapidez no envio de conteúdos e aprovações.</p>
-        </details>
-        <details class="glass" style="padding: 18px 22px;">
-          <summary style="cursor: pointer; font-weight: 600; font-size: 1rem; color: var(--offwhite);">Preciso assinar contrato de fidelidade longo?</summary>
-          <p style="font-size: .9rem; margin-top: 10px;">Não. Não trabalhamos com fidelidade forçada — você permanece com a gente pelo resultado entregue, não por obrigação contratual.</p>
-        </details>
-        <details class="glass" style="padding: 18px 22px;">
-          <summary style="cursor: pointer; font-weight: 600; font-size: 1rem; color: var(--offwhite);">O site fica registrado no meu nome?</summary>
-          <p style="font-size: .9rem; margin-top: 10px;">Sim. Domínio e hospedagem ficam em seu nome, garantindo que você tenha controle total sobre o seu ativo digital.</p>
-        </details>
-        <details class="glass" style="padding: 18px 22px;">
-          <summary style="cursor: pointer; font-weight: 600; font-size: 1rem; color: var(--offwhite);">Vocês fazem branding para marcas que já existem?</summary>
-          <p style="font-size: .9rem; margin-top: 10px;">Sim. Trabalhamos tanto com marcas novas quanto com reposicionamento de marcas já consolidadas que precisam de uma nova identidade visual.</p>
-        </details>
-        <details class="glass" style="padding: 18px 22px;">
-          <summary style="cursor: pointer; font-weight: 600; font-size: 1rem; color: var(--offwhite);">Como funciona a gestão de tráfego pago?</summary>
-          <p style="font-size: .9rem; margin-top: 10px;">Cuidamos de toda a criação das campanhas, criativos e otimização contínua, com relatórios claros sobre onde o investimento está sendo aplicado.</p>
-        </details>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA FINAL -->
-  <section id="contato" style="padding: 88px 0;">
-    <div class="wrap">
-      <div class="glass" style="padding: 64px 48px; text-align: center; border-radius: 28px;">
-        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.6rem); margin-bottom: 16px;">Chega de esperar o cliente te achar por acaso.</h2>
-        <p style="max-width: 480px; margin: 0 auto 32px;">Conte um pouco sobre o seu negócio e vamos montar uma estratégia sob medida.</p>
-        <a class="btn btn-primary" href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer">Falar no WhatsApp →</a>
-        <div style="display: flex; align-items: center; gap: 12px; background: rgba(184,137,74,.1); border: 1px solid rgba(184,137,74,.3); padding: 16px 22px; border-radius: 999px; font-size: 13.5px; color: var(--gold-light); margin: 28px auto 0; max-width: 460px; justify-content: center;">
-          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="flex-shrink: 0; color: var(--gold);"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4l3 3"></path></svg>
-          Atendemos um número limitado de clientes por mês para garantir dedicação total a cada projeto.
+        <div class="section-block">
+          <div class="section-block__head">
+            <div class="eyebrow">Perguntas frequentes</div>
+            <h2>Antes de falar com a gente, tire suas dúvidas</h2>
+          </div>
+          <div class="faq-grid">
+            <details class="glass faq-item" open>
+              <summary>Quanto custa um site ou uma campanha de tráfego?</summary>
+              <p>Cada projeto é orçado sob medida, depois de entendermos seu negócio e objetivo. Fale com a gente pelo WhatsApp e receba uma proposta sem compromisso.</p>
+            </details>
+            <details class="glass faq-item">
+              <summary>Quanto tempo leva para o site ficar pronto?</summary>
+              <p>Em média, entre 3 e 7 dias úteis, dependendo da complexidade do projeto e da rapidez no envio de conteúdos e aprovações.</p>
+            </details>
+            <details class="glass faq-item">
+              <summary>Preciso assinar contrato de fidelidade longo?</summary>
+              <p>Não. Não trabalhamos com fidelidade forçada, você permanece com a gente pelo resultado entregue, não por obrigação contratual.</p>
+            </details>
+            <details class="glass faq-item">
+              <summary>O site fica registrado no meu nome?</summary>
+              <p>Sim. Domínio e hospedagem ficam em seu nome, garantindo que você tenha controle total sobre o seu ativo digital.</p>
+            </details>
+            <details class="glass faq-item">
+              <summary>Vocês fazem branding para marcas que já existem?</summary>
+              <p>Sim. Trabalhamos tanto com marcas novas quanto com reposicionamento de marcas já consolidadas que precisam de uma nova identidade visual.</p>
+            </details>
+            <details class="glass faq-item">
+              <summary>Como funciona a gestão de tráfego pago?</summary>
+              <p>Cuidamos de toda a criação das campanhas, criativos e otimização contínua, com relatórios claros sobre onde o investimento está sendo aplicado.</p>
+            </details>
+          </div>
         </div>
+
+        <div class="glass final-cta">
+          <h2>Chega de esperar o cliente te achar por acaso.</h2>
+          <p>Conte um pouco sobre o seu negócio e vamos montar uma estratégia sob medida.</p>
+          <a class="btn btn-primary" href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20filme%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer">Falar no WhatsApp →</a>
+        </div>
+
+        <div class="glass footer-card">
+          <div class="footer-grid">
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+                <div style="width: 34px; height: 34px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><path d="M4 19l5-6 4 3 7-9"></path></svg>
+                </div>
+                <span style="font-family: var(--font-display); font-size: 1.15rem; color: var(--offwhite);">Creative Wave</span>
+              </div>
+              <p style="font-size: .9rem; max-width: 26rem;">Inovação digital para marcas únicas. Sites que vendem, tráfego que converte.</p>
+            </div>
+            <div>
+              <h3>Navegação</h3>
+              <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="servicos.html">Serviços</a>
+                <a href="sobre.html">Sobre</a>
+                <a href="contato.html">Contato</a>
+              </div>
+            </div>
+            <div>
+              <h3>Contato</h3>
+              <div class="footer-contact">
+                <a href="mailto:contato@creativewaveagencia.com.br">contato@creativewaveagencia.com.br</a>
+                <div class="footer-social">
+                  <a href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20filme%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.81L2 22l5.42-1.42a9.87 9.87 0 004.62 1.18h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm0 18.02h-.01a8.1 8.1 0 01-4.14-1.13l-.3-.18-3.08.81.82-3-.2-.31a8.11 8.11 0 01-1.24-4.3c0-4.49 3.66-8.15 8.16-8.15 4.49 0 8.14 3.66 8.14 8.15 0 4.5-3.65 8.11-8.15 8.11z"></path></svg>
+                  </a>
+                  <a href="https://instagram.com/cw.midiadigital" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="var(--gold)"></circle></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="site-footer micro">
+          <span>© 2026 Creative Wave, Mídia Digital. CNPJ 58.124.061/0001-40.</span>
+          <a href="#top">Voltar ao topo ↑</a>
+        </footer>
       </div>
-    </div>
-  </section>
+    </section>
   </main>
 
-  <!-- FOOTER -->
-  <footer style="padding: 90px 0 32px;">
-    <div class="wrap">
-      <div class="glass" style="padding: 48px 44px; border-radius: 28px; margin-bottom: 28px;">
-        <div class="footer-grid" style="display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 40px;">
-          <div>
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
-              <div style="width: 34px; height: 34px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><path d="M4 19l5-6 4 3 7-9"></path></svg>
-              </div>
-              <span style="font-family: var(--font-display); font-size: 1.15rem;">Creative Wave</span>
-            </div>
-            <p style="font-size: .9rem; max-width: 26rem;">Inovação digital para marcas únicas. Sites que vendem, tráfego que converte.</p>
-          </div>
-          <div>
-            <h3 style="font-family: var(--font-body); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; font-weight: 600;">Navegação</h3>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-              <a href="#servicos" style="font-size: 14px; color: var(--gray-text);">Serviços</a>
-              <a href="#processo" style="font-size: 14px; color: var(--gray-text);">Processo</a>
-              <a href="sobre.html" style="font-size: 14px; color: var(--gray-text);">Sobre</a>
-              <a href="contato.html" style="font-size: 14px; color: var(--gray-text);">Contato</a>
-            </div>
-          </div>
-          <div>
-            <h3 style="font-family: var(--font-body); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; font-weight: 600;">Contato</h3>
-            <div style="display: flex; flex-direction: column; gap: 14px;">
-              <a href="mailto:contato@creativewaveagencia.com.br" style="font-size: 14px; color: var(--gray-text);">contato@creativewaveagencia.com.br</a>
-              <div style="display: flex; gap: 10px;">
-                <a href="https://wa.me/5547988211597?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Creative%20Wave%20e%20quero%20saber%20mais." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" style="width: 38px; height: 38px; border-radius: 50%; background: var(--glass-bg); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center;">
-                  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.81L2 22l5.42-1.42a9.87 9.87 0 004.62 1.18h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm0 18.02h-.01a8.1 8.1 0 01-4.14-1.13l-.3-.18-3.08.81.82-3-.2-.31a8.11 8.11 0 01-1.24-4.3c0-4.49 3.66-8.15 8.16-8.15 4.49 0 8.14 3.66 8.14 8.15 0 4.5-3.65 8.11-8.15 8.11z"></path></svg>
-                </a>
-                <a href="https://instagram.com/cw.midiadigital" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style="width: 38px; height: 38px; border-radius: 50%; background: var(--glass-bg); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center;">
-                  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="var(--gold)"></circle></svg>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--gray-text); padding: 0 8px;">
-        <span>© 2026 Creative Wave — Mídia Digital. CNPJ 58.124.061/0001-40. Todos os direitos reservados.</span>
-        <a href="#top" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--glass-border); background: var(--glass-bg); font-size: 12.5px; color: var(--offwhite);">Voltar ao topo ↑</a>
-      </div>
-    </div>
-  </footer>
+  <script>
+    (() => {
+      "use strict";
 
-</div>
-<script>
-  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
-    link.addEventListener('click', function (e) {
-      var id = link.getAttribute('href').slice(1);
-      var target = id ? document.getElementById(id) : document.body;
-      if (!target) return;
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  });
-</script>
+      const FRAME_COUNT = 110;
+      const FRAME_PAD = 4;
+      const LERP_FACTOR = 0.115;
+      const DWELL_WIDTH = 0.04;
+      const DWELL_PEAK = 2.8;
+      const LUT_SIZE = 2400;
+      const MOBILE_QUERY = "(max-width: 780px)";
+      const REDUCED_QUERY = "(prefers-reduced-motion: reduce)";
+      const DWELL_CENTERS = [0.05, 0.26, 0.5, 0.72, 0.93];
+
+      const sequence = document.getElementById("sequence");
+      const stage = document.getElementById("stage");
+      const canvas = document.getElementById("film-canvas");
+      const ctx = canvas.getContext("2d", { alpha: false, desynchronized: true });
+      const loader = document.getElementById("loader");
+      const loaderFill = document.getElementById("loader-fill");
+      const loaderCount = document.getElementById("loader-count");
+      const loaderLabel = document.getElementById("loader-label");
+      const telemetryChapter = document.getElementById("telemetry-chapter");
+      const chapters = Array.from(document.querySelectorAll(".chapter"));
+      const reducedMotion = window.matchMedia(REDUCED_QUERY).matches;
+      const mobileMedia = window.matchMedia(MOBILE_QUERY);
+      const frameStores = {
+        desktop: createFrameStore("frames/desktop"),
+        mobile: createFrameStore("frames/mobile")
+      };
+      const chapterVisibility = new WeakMap();
+      let useMobileFrames = mobileMedia.matches;
+      let activeStore = useMobileFrames ? frameStores.mobile : frameStores.desktop;
+      let currentFrame = 0;
+      let targetFrame = 0;
+      let lastDrawn = -1;
+      let pageVisible = true;
+      let rafId = 0;
+      let sequenceTop = 0;
+      let sequenceDistance = 1;
+
+      function createFrameStore(directory) {
+        return {
+          directory,
+          images: new Array(FRAME_COUNT),
+          loaded: new Uint8Array(FRAME_COUNT),
+          promises: new Array(FRAME_COUNT)
+        };
+      }
+
+      function frameUrl(index, store = activeStore) {
+        return `${store.directory}/frame-${String(index + 1).padStart(FRAME_PAD, "0")}.webp`;
+      }
+
+      function setLoaderProgress(ratio) {
+        const safeRatio = Math.max(0, Math.min(1, ratio));
+        loaderFill.style.transform = `scaleX(${safeRatio})`;
+        loaderCount.textContent = `${String(Math.round(safeRatio * 100)).padStart(3, "0")}%`;
+      }
+
+      function loadFrame(index, store = activeStore, retries = 1) {
+        if (store.loaded[index]) return Promise.resolve(store.images[index]);
+        if (store.promises[index]) return store.promises[index];
+
+        store.promises[index] = new Promise((resolve) => {
+          const attempt = (remaining) => {
+            const image = new Image();
+            store.images[index] = image;
+            image.decoding = "async";
+            image.onload = () => {
+              store.loaded[index] = 1;
+              resolve(image);
+            };
+            image.onerror = () => {
+              if (remaining > 0) {
+                window.setTimeout(() => attempt(remaining - 1), 140);
+              } else {
+                store.images[index] = null;
+                store.promises[index] = null;
+                resolve(null);
+              }
+            };
+            image.src = frameUrl(index, store);
+          };
+          attempt(retries);
+        });
+        return store.promises[index];
+      }
+
+      async function loadInBatches(indices, size = 8, store = activeStore) {
+        for (let start = 0; start < indices.length; start += size) {
+          const batch = indices.slice(start, start + size);
+          await Promise.all(batch.map((index) => loadFrame(index, store)));
+        }
+      }
+
+      function nearestLoaded(index, store = activeStore) {
+        if (store.loaded[index]) return index;
+        for (let distance = 1; distance < FRAME_COUNT; distance += 1) {
+          const before = index - distance;
+          const after = index + distance;
+          if (before >= 0 && store.loaded[before]) return before;
+          if (after < FRAME_COUNT && store.loaded[after]) return after;
+        }
+        return -1;
+      }
+
+      function resizeCanvas() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const width = Math.round(stage.clientWidth * dpr);
+        const height = Math.round(stage.clientHeight * dpr);
+        if (canvas.width !== width || canvas.height !== height) {
+          canvas.width = width;
+          canvas.height = height;
+          lastDrawn = -1;
+        }
+      }
+
+      function updateSequenceMetrics() {
+        const rect = sequence.getBoundingClientRect();
+        sequenceTop = window.scrollY + rect.top;
+        sequenceDistance = Math.max(1, rect.height - window.innerHeight);
+      }
+
+      function drawFrame(index) {
+        const resolved = nearestLoaded(Math.max(0, Math.min(FRAME_COUNT - 1, index)));
+        if (resolved < 0 || resolved === lastDrawn) return;
+        const image = activeStore.images[resolved];
+        if (!image || !image.naturalWidth) return;
+
+        const width = canvas.width;
+        const height = canvas.height;
+        ctx.fillStyle = "#0A0A0A";
+        ctx.fillRect(0, 0, width, height);
+
+        let scale, drawWidth, drawHeight, x, y;
+
+        if (useMobileFrames) {
+          scale = width / image.naturalWidth;
+          drawWidth = width;
+          drawHeight = image.naturalHeight * scale;
+          x = 0;
+          y = height * 0.45 - drawHeight / 2;
+        } else {
+          scale = Math.max(width / image.naturalWidth, height / image.naturalHeight);
+          drawWidth = image.naturalWidth * scale;
+          drawHeight = image.naturalHeight * scale;
+          x = (width - drawWidth) / 2;
+          y = (height - drawHeight) / 2;
+        }
+
+        ctx.drawImage(image, x, y, drawWidth, drawHeight);
+        lastDrawn = resolved;
+      }
+
+      const rawAtEffective = new Float64Array(LUT_SIZE + 1);
+
+      function buildDwellLut() {
+        let total = 0;
+        const density = new Float64Array(LUT_SIZE + 1);
+        for (let i = 0; i <= LUT_SIZE; i += 1) {
+          const effective = i / LUT_SIZE;
+          let value = 1;
+          for (const center of DWELL_CENTERS) {
+            const delta = (effective - center) / DWELL_WIDTH;
+            value += DWELL_PEAK * Math.exp(-0.5 * delta * delta);
+          }
+          density[i] = value;
+          if (i > 0) total += (density[i - 1] + value) * 0.5;
+          rawAtEffective[i] = total;
+        }
+        for (let i = 0; i <= LUT_SIZE; i += 1) rawAtEffective[i] /= total;
+      }
+
+      function remapProgress(raw) {
+        let low = 0;
+        let high = LUT_SIZE;
+        while (low < high) {
+          const mid = (low + high) >> 1;
+          if (rawAtEffective[mid] < raw) low = mid + 1;
+          else high = mid;
+        }
+        const index = Math.max(1, low);
+        const leftRaw = rawAtEffective[index - 1];
+        const rightRaw = rawAtEffective[index];
+        const span = rightRaw - leftRaw || 1;
+        const mix = (raw - leftRaw) / span;
+        return Math.max(0, Math.min(1, (index - 1 + mix) / LUT_SIZE));
+      }
+
+      function rawScrollProgress() {
+        return Math.max(0, Math.min(1, (window.scrollY - sequenceTop) / sequenceDistance));
+      }
+
+      function updateChapters(effective) {
+        let active = chapters[0];
+        let nearest = Infinity;
+        for (const chapter of chapters) {
+          const center = Number(chapter.dataset.center);
+          const windowSize = Number(chapter.dataset.window);
+          const distance = Math.abs(effective - center);
+          const visible = distance <= windowSize;
+          if (chapterVisibility.get(chapter) !== visible) {
+            chapterVisibility.set(chapter, visible);
+            chapter.classList.toggle("is-visible", visible);
+            chapter.setAttribute("aria-hidden", String(!visible));
+          }
+          if (distance < nearest) {
+            nearest = distance;
+            active = chapter;
+          }
+        }
+        if (telemetryChapter.textContent !== active.dataset.label) {
+          telemetryChapter.textContent = active.dataset.label;
+        }
+      }
+
+      function updateInterface(raw, effective, frame) {
+        document.documentElement.style.setProperty("--frame-progress", raw.toFixed(4));
+        const edge = Math.min(effective, 1 - effective) / 0.08;
+        stage.style.setProperty("--scrim-opacity", String(Math.min(0.78, 0.42 + edge * 0.22)));
+      }
+
+      function dismissLoader() {
+        setLoaderProgress(1);
+        loader.classList.add("is-done");
+        document.body.classList.remove("is-loading");
+        window.setTimeout(() => loader.remove(), 1000);
+      }
+
+      function showLoadError() {
+        loaderLabel.textContent = "Frames indisponíveis. Recarregue a página";
+        loaderCount.textContent = "ERRO";
+        loaderCount.style.color = "#D98F8F";
+        loader.setAttribute("aria-label", "Os frames do filme não puderam ser carregados. Recarregue a página.");
+      }
+
+      function renderReducedPoster(frame) {
+        currentFrame = frame;
+        targetFrame = frame;
+        drawFrame(frame);
+        chapters.forEach((chapter, index) => {
+          const visible = index === 0;
+          chapterVisibility.set(chapter, visible);
+          chapter.classList.toggle("is-visible", visible);
+          chapter.setAttribute("aria-hidden", String(!visible));
+        });
+      }
+
+      function tick() {
+        if (!pageVisible || reducedMotion) return;
+        const raw = rawScrollProgress();
+        const effective = remapProgress(raw);
+        targetFrame = Math.round(effective * (FRAME_COUNT - 1));
+        currentFrame += (targetFrame - currentFrame) * LERP_FACTOR;
+        const frame = Math.round(currentFrame);
+        drawFrame(frame);
+        updateChapters(effective);
+        updateInterface(raw, effective, frame);
+        rafId = requestAnimationFrame(tick);
+      }
+
+      async function init() {
+        buildDwellLut();
+        resizeCanvas();
+        updateSequenceMetrics();
+        setLoaderProgress(0.06);
+
+        if (reducedMotion) {
+          const posterFrame = Math.round(0.5 * (FRAME_COUNT - 1));
+          const poster = await loadFrame(posterFrame);
+          if (!poster) {
+            showLoadError();
+            return;
+          }
+          renderReducedPoster(posterFrame);
+          dismissLoader();
+          return;
+        }
+
+        const critical = Array.from(new Set([
+          0,
+          ...DWELL_CENTERS.map((center) => Math.round(center * (FRAME_COUNT - 1))),
+          FRAME_COUNT - 1
+        ])).sort((a, b) => a - b);
+
+        const firstFrame = await loadFrame(0);
+        if (firstFrame) {
+          drawFrame(0);
+          setLoaderProgress(0.28);
+        }
+
+        const criticalTail = critical.filter((index) => index !== 0);
+        let prepared = 0;
+        await Promise.all(criticalTail.map(async (index) => {
+          const image = await loadFrame(index);
+          prepared += 1;
+          setLoaderProgress(0.28 + 0.68 * (prepared / criticalTail.length));
+          return image;
+        }));
+
+        const readyFrame = nearestLoaded(0);
+        if (readyFrame < 0) {
+          showLoadError();
+          return;
+        }
+        drawFrame(readyFrame);
+        dismissLoader();
+        tick();
+
+        const remaining = Array.from({ length: FRAME_COUNT }, (_, index) => index)
+          .filter((index) => !critical.includes(index));
+        loadInBatches(remaining);
+      }
+
+      async function swapFrameSet(event) {
+        useMobileFrames = event.matches;
+        activeStore = useMobileFrames ? frameStores.mobile : frameStores.desktop;
+        lastDrawn = -1;
+        resizeCanvas();
+        updateSequenceMetrics();
+
+        const frame = Math.max(0, Math.min(FRAME_COUNT - 1, Math.round(currentFrame)));
+        const image = await loadFrame(frame, activeStore);
+        if (!image) return;
+        drawFrame(frame);
+
+        const byDistance = Array.from({ length: FRAME_COUNT }, (_, index) => index)
+          .sort((a, b) => Math.abs(a - frame) - Math.abs(b - frame));
+        loadInBatches(byDistance, 8, activeStore);
+      }
+
+      window.addEventListener("resize", () => {
+        resizeCanvas();
+        updateSequenceMetrics();
+      }, { passive: true });
+      mobileMedia.addEventListener("change", swapFrameSet);
+      document.addEventListener("visibilitychange", () => {
+        pageVisible = !document.hidden;
+        if (pageVisible && !reducedMotion) {
+          cancelAnimationFrame(rafId);
+          tick();
+        }
+      });
+
+      init();
+    })();
+  </script>
 </body>
 </html>
