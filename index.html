@@ -791,6 +791,17 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
         showDebugBanner("PROMISE REJEITADA: " + reason);
       });
 
+      let debugEl = null;
+      function updateDebugReadout(text) {
+        if (!debugEl) {
+          debugEl = document.createElement("div");
+          debugEl.id = "debug-readout";
+          debugEl.style.cssText = "position:fixed;bottom:0;left:0;right:0;z-index:99998;background:rgba(0,0,0,.85);color:#0f0;padding:8px 10px;font:10px/1.4 monospace;white-space:pre-wrap;pointer-events:none;";
+          (document.body || document.documentElement).appendChild(debugEl);
+        }
+        debugEl.textContent = text;
+      }
+
       const FRAME_COUNT = 110;
       const FRAME_PAD = 4;
       const LERP_FACTOR = 0.115;
@@ -1028,6 +1039,20 @@ src="https://www.facebook.com/tr?id=1407680314600232&ev=PageView&noscript=1"
       }
 
       function stepFrame() {
+        const rect = sequence.getBoundingClientRect();
+        const loadedCount = activeStore.loaded.reduce((a, b) => a + b, 0);
+        updateDebugReadout(
+          "scrollY=" + Math.round(window.scrollY) +
+          " rectTop=" + Math.round(rect.top) +
+          " rectH=" + Math.round(rect.height) +
+          " winH=" + window.innerHeight +
+          "\npageVisible=" + pageVisible +
+          " reducedMotion=" + reducedMotion +
+          " mobile=" + useMobileFrames +
+          " loaded=" + loadedCount + "/" + FRAME_COUNT +
+          "\ncurrentFrame=" + currentFrame.toFixed(1) +
+          " targetFrame=" + targetFrame
+        );
         if (!pageVisible || reducedMotion) return;
         const raw = rawScrollProgress();
         const effective = remapProgress(raw);
