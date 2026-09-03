@@ -1,6 +1,6 @@
 /* ===== Creative Wave — Brand Tokens ===== */
 :root {
-  --charcoal-deep: #1C1B19;
+  --charcoal-deep: #0A0A0A;
   --charcoal: #2B2A28;
   --charcoal-light: #37352F;
   --gold: #B8894A;
@@ -9,6 +9,8 @@
   --gray-text: #A69E8F;
   --gray-border: #45423C;
   --success-bg: #E9F3E9;
+  --glass-bg: rgba(55, 53, 47, .42);
+  --glass-border: rgba(242, 239, 233, .1);
 
   --font-display: "Playfair Display", Georgia, serif;
   --font-body: "Inter", -apple-system, sans-serif;
@@ -39,7 +41,7 @@ html { scroll-behavior: smooth; }
 }
 
 body {
-  background: var(--charcoal);
+  background: var(--charcoal-deep);
   color: var(--offwhite);
   font-family: var(--font-body);
   font-size: 16px;
@@ -607,16 +609,18 @@ footer {
   justify-content: center;
   gap: 12px;
   padding: 16px 20px;
-  background: var(--charcoal-light);
-  border: 1px solid var(--gray-border);
-  border-radius: var(--radius);
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
   color: var(--offwhite);
   font-size: 15px;
   font-weight: 600;
   transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
 }
 .links-btn svg { color: var(--gold); flex-shrink: 0; }
-.links-btn:hover { border-color: var(--gold); background: var(--charcoal-deep); transform: translateY(-2px); }
+.links-btn:hover { border-color: var(--gold); background: var(--charcoal-light); transform: translateY(-2px); }
 .links-btn:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 3px; }
 .links-footer {
   margin-top: 40px;
